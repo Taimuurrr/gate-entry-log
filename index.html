@@ -427,12 +427,12 @@ tr:hover td{background:#f9fffc}
 
     <!-- ═══ GATE LOG ═══ -->
     <div id="screen-log" class="screen hidden">
-      <!-- Security check-in only notice -->
+      <!-- Security add-entry banner -->
       <div class="role-notice hidden" id="security-notice">
         <div class="role-notice-icon">🔐</div>
         <div>
-          <h4>Security access</h4>
-          <p>You can add new vehicle entries below. Viewing and editing existing records requires admin or viewer access.</p>
+          <h4>Security officer</h4>
+          <p>You can view and search all records and add new check-in entries. Editing and deleting records is restricted to admins.</p>
         </div>
       </div>
 
@@ -559,7 +559,7 @@ tr:hover td{background:#f9fffc}
         <div style="font-size:13px;font-weight:600;color:var(--warn);margin-bottom:4px">Role permissions</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;color:var(--sub)">
           <div><strong style="color:var(--forest)">Admin</strong> — Full access: view, add, edit, delete records, manage users, reports, import</div>
-          <div><strong style="color:var(--info)">Security</strong> — Check-in only: can add new entries, nothing else</div>
+          <div><strong style="color:var(--info)">Security</strong> — View + add: can view, search, filter, export records and add new check-in entries and check out vehicles</div>
           <div><strong style="color:var(--muted)">Viewer</strong> — Read only: view, filter, search and export records, no changes</div>
         </div>
       </div>
@@ -639,7 +639,7 @@ tr:hover td{background:#f9fffc}
         <div class="fg"><label>Password</label><input id="u-pass" type="password" placeholder="Min 8 characters"></div>
         <div class="fg"><label>Role</label>
           <select id="u-role">
-            <option value="security">Security — add new entries only</option>
+            <option value="security">Security — view records, add entries and check out vehicles</option>
             <option value="viewer">Viewer — view, filter and export only</option>
             <option value="admin">Admin — full access</option>
           </select>
@@ -730,13 +730,19 @@ async function doLogin() {
   const err=$('login-err');
   err.textContent='';
   if(!email||!pass){err.textContent='Please enter your email and password.';return;}
+  if(!_sb){err.textContent='App not connected — make sure SUPABASE_URL and SUPABASE_KEY are filled in, save the file, then re-upload to GitHub.';return;}
   setLoginLoading(true);
-  const{error}=await _sb.auth.signInWithPassword({email,password:pass});
-  setLoginLoading(false);
-  if(error){
-    err.textContent = error.message.includes('Invalid login')
-      ? 'Incorrect email or password. Please try again.'
-      : error.message;
+  try {
+    const{error}=await _sb.auth.signInWithPassword({email,password:pass});
+    if(error){
+      err.textContent = (error.message.includes('Invalid login')||error.message.includes('invalid_credentials'))
+        ? 'Incorrect email or password. Please try again.'
+        : error.message;
+    }
+  } catch(e) {
+    err.textContent = 'Connection error: '+e.message;
+  } finally {
+    setLoginLoading(false);
   }
 }
 function setLoginLoading(on){
@@ -795,17 +801,21 @@ function setupLogForRole(){
   const logSection=$('log-table-section');
   const addBtn=$('btn-add-entry');
 
+  // All roles see the table
+  logSection.classList.remove('hidden');
+
   if(isSecurity()){
-    // Security: show check-in form only, hide table
+    // Security: show notice banner + add button, hide edit/del (handled in renderLog)
     secNotice.classList.remove('hidden');
-    logSection.classList.add('hidden');
-    toggleForm(true); // auto-open form
-  } else {
-    // Admin / Viewer: show table
+    if(addBtn) addBtn.style.display='';
+  } else if(isViewer()){
+    // Viewer: no notice, no add button
     secNotice.classList.add('hidden');
-    logSection.classList.remove('hidden');
-    // Viewer: hide add button
-    if(addBtn) addBtn.style.display = isViewer() ? 'none' : '';
+    if(addBtn) addBtn.style.display='none';
+  } else {
+    // Admin: full access
+    secNotice.classList.add('hidden');
+    if(addBtn) addBtn.style.display='';
   }
 }
 
@@ -902,9 +912,7 @@ function mkC(id,type,labels,datasets,extra={}){
 
 // ── gate log ───────────────────────────────────────────────────
 async function loadLog(){
-  // Security officers only get check-in form — no table
-  if(isSecurity()) return;
-
+  // Viewer and Security cannot see log-table-section if not yet set up — just fetch
   const q=($('log-q').value||'').trim();
   const date=$('log-date').value;
   const purp=$('log-purpose').value;
@@ -951,8 +959,9 @@ function renderLog(){
     const st=e.check_out
       ?'<span class="badge b-out"><span class="dot dot-g"></span>'+(e.time_out||'').slice(0,5)+'</span>'
       :'<span class="badge b-in"><span class="dot dot-r"></span>Inside</span>';
-    // checkout button: admin only (viewer sees status only)
-    const co=isA&&!e.check_out?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
+    // checkout: admin + security; edit/del: admin only
+    const canCO=(isA||isSecurity())&&!e.check_out;
+    const co=canCO?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
     const ed=isA?'<button class="btn-xs btn-edit" onclick="openEdit('+e.id+')">Edit</button>':'';
     const dl=isA?'<button class="btn-xs btn-del" onclick="doDelete('+e.id+')">Del</button>':'';
     return '<tr><td class="td-mono">'+(e.date_in||'—')+'</td><td class="td-mono">'+(e.time_in||'—').slice(0,5)+'</td><td class="td-name" title="'+(e.driver_name||'')+'">'+(e.driver_name||'—')+'</td><td title="'+(e.company||'')+'">'+(e.company||'—')+'</td><td class="td-plate">'+(e.plate||'—')+'</td><td><span class="badge '+(PC[e.purpose]||'b-def')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center;font-weight:600">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+st+'</td><td class="td-acts">'+co+' '+ed+' '+dl+'</td></tr>';
@@ -963,7 +972,8 @@ function renderLog(){
     const st=e.check_out
       ?'<span class="badge b-out"><span class="dot dot-g"></span>'+(e.time_out||'').slice(0,5)+'</span>'
       :'<span class="badge b-in"><span class="dot dot-r"></span>Inside</span>';
-    const co=isA&&!e.check_out?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
+    const canCO2=(isA||isSecurity())&&!e.check_out;
+    const co=canCO2?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
     const ed=isA?'<button class="btn-xs btn-edit" onclick="openEdit('+e.id+')">Edit</button>':'';
     const dl=isA?'<button class="btn-xs btn-del" onclick="doDelete('+e.id+')">Del</button>':'';
     return '<div class="entry-card"><div class="ec-head"><div><div class="ec-name">'+(e.driver_name||'—')+'</div><div class="ec-plate">'+(e.plate||'—')+(e.plate_source?' · '+e.plate_source:'')+'</div></div>'+st+'</div><div class="ec-row"><span>📅 '+(e.date_in||'—')+'</span><span>🕐 '+(e.time_in||'—').slice(0,5)+'</span><span>🏢 '+(e.company||'—')+'</span><span>🚪 Dock '+(e.dock||'—')+'</span><span>👮 '+(e.officer||'—')+'</span></div><span class="badge '+(PC[e.purpose]||'b-def')+'" style="margin-bottom:8px">'+(e.purpose||'—')+'</span>'+(e.remarks?'<div class="text-sm text-muted" style="margin:6px 0">📝 '+e.remarks+'</div>':'')+'<div class="ec-acts">'+co+' '+ed+' '+dl+'</div></div>';
@@ -1005,7 +1015,7 @@ async function submitEntry(){
 
 // ── checkout (admin only) ──────────────────────────────────────
 async function doCheckout(id){
-  if(!isAdmin()){toast('Admin access required',1);return;}
+  if(!isAdmin()&&!isSecurity()){toast('You do not have permission to check out vehicles',1);return;}
   const now=new Date();
   const{error}=await _sb.from('gate_entries').update({
     check_out:true,exit_date:now.toISOString().split('T')[0],
