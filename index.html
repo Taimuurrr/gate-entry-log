@@ -12,17 +12,18 @@
   --text:#111827;--sub:#374151;--muted:#6b7280;
   --border:#e5e7eb;--bg:#f3f4f6;--card:#fff;
   --danger:#dc2626;--warn:#d97706;--info:#2563eb;
+  --sb-w:224px;
 }
 html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
 
-/* LOGIN */
+/* ── LOGIN ──────────────────────────────── */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--forest);padding:16px}
 .login-box{background:#fff;border-radius:16px;padding:36px;width:380px;max-width:100%}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px}
 .cmark{width:38px;height:38px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:var(--forest);flex-shrink:0}
 .brand-txt{font-size:18px;font-weight:700;color:var(--forest)}.brand-txt span{color:var(--green)}
 .login-box h2{font-size:20px;font-weight:700;margin-bottom:4px}
-.login-box .sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.login-box .lsub{font-size:13px;color:var(--muted);margin-bottom:24px}
 .lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
 .inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border .15s,box-shadow .15s}
 .inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,231,132,.15)}
@@ -30,170 +31,276 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .btn-login{width:100%;padding:11px;background:var(--forest);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-login:hover:not(:disabled){background:var(--forest2)}
 .btn-login:disabled{opacity:.6;cursor:not-allowed}
-#login-err{color:var(--danger);font-size:13px;margin-top:10px;min-height:18px;line-height:1.4}
+#login-err{color:var(--danger);font-size:13px;margin-top:10px;min-height:18px;line-height:1.5}
 .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* APP */
+/* ── APP SHELL ──────────────────────────── */
 #app{display:none;height:100vh;overflow:hidden}
-.layout{display:flex;height:100%}
+.layout{display:flex;height:100%;position:relative}
 
-/* SIDEBAR */
-.sb{width:224px;background:var(--forest);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
-.sb-brand{padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:9px}
+/* ── SIDEBAR ────────────────────────────── */
+.sb{width:var(--sb-w);background:var(--forest);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:transform .25s;z-index:200}
+.sb-brand{padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:9px}
 .sb-brand .btxt{font-size:14px;font-weight:700;color:#fff}.sb-brand .btxt span{color:var(--green)}
+.sb-close{display:none;margin-left:auto;background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer;line-height:1;padding:0 2px}
 .sb-user{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
 .sb-user .uname{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-user .urole{font-size:11px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em}
+.sb-user .urole{font-size:11px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
 .nav-sec{padding:6px 0}
 .nav-lbl{padding:6px 16px 2px;font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 16px;color:rgba(255,255,255,.65);font-size:13px;font-weight:500;cursor:pointer;transition:.12s;border-left:3px solid transparent;user-select:none}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 16px;color:rgba(255,255,255,.65);font-size:13px;font-weight:500;cursor:pointer;transition:.12s;border-left:3px solid transparent;user-select:none}
 .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
 .nav-item.active{background:rgba(0,231,132,.12);color:var(--green);border-left-color:var(--green)}
 .nav-item svg{width:15px;height:15px;flex-shrink:0}
 .nav-badge{margin-left:auto;background:var(--danger);color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;display:none}
-.sb-foot{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-foot{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px}
 .btn-out{width:100%;padding:8px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.15);border-radius:7px;font-size:13px;font-weight:500;cursor:pointer}
 .btn-out:hover{background:rgba(255,255,255,.15);color:#fff}
+.sb-version{font-size:10px;color:rgba(255,255,255,.2);text-align:center}
 
-/* MAIN */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+/* ── TOPBAR ─────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:4px;color:var(--sub)}
+.burger svg{width:20px;height:20px}
 .topbar-title{font-size:15px;font-weight:600}
-.live-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.live-chip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+.live-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.content{flex:1;overflow-y:auto;padding:20px 24px}
 
-/* BUTTONS */
-.btn{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s}
+/* ── OVERLAY for mobile sidebar ─────────── */
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199}
+
+/* ── CONTENT ────────────────────────────── */
+.content{flex:1;overflow-y:auto;padding:20px}
+
+/* ── BUTTONS ────────────────────────────── */
+.btn{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s,background .15s;white-space:nowrap}
 .btn:hover:not(:disabled){opacity:.85}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--forest);color:#fff}
 .btn-green{background:var(--green);color:var(--forest);font-weight:600}
 .btn-outline{background:#fff;color:var(--sub);border:1px solid var(--border)}
-.btn-sm{font-size:12px;padding:4px 9px;border-radius:6px}
-.btn-edit{background:#eff6ff;color:var(--info);font-size:11px;padding:3px 8px;border-radius:6px;border:none;cursor:pointer}
-.btn-del{background:#fee2e2;color:var(--danger);font-size:11px;padding:3px 8px;border-radius:6px;border:none;cursor:pointer}
-.btn-co{background:var(--mint);color:var(--forest);font-size:12px;padding:4px 10px;border-radius:6px;font-weight:600;border:none;cursor:pointer}
+.btn-sm{font-size:12px;padding:5px 10px;border-radius:6px}
+.btn-xs{font-size:11px;padding:3px 8px;border-radius:6px;border:none;cursor:pointer}
+.btn-edit{background:#eff6ff;color:var(--info)}
+.btn-del{background:#fee2e2;color:var(--danger)}
+.btn-co{background:var(--mint);color:var(--forest);font-size:12px;padding:5px 10px;border-radius:6px;font-weight:600;border:none;cursor:pointer;white-space:nowrap}
 .btn-co:hover{background:var(--green)}
 
-/* STATS */
+/* ── STATS ──────────────────────────────── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
 .stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .sc-all::after{background:#9ca3af}.sc-today::after{background:var(--info)}.sc-in::after{background:var(--danger)}.sc-out::after{background:var(--forest)}
 .stat-lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.stat-val{font-size:28px;font-weight:700;line-height:1}
+.stat-val{font-size:26px;font-weight:700;line-height:1}
 .sc-all .stat-val{color:var(--sub)}.sc-today .stat-val{color:var(--info)}.sc-in .stat-val{color:var(--danger)}.sc-out .stat-val{color:var(--forest)}
 .stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
 
-/* CARD / CHART */
+/* ── CARDS / CHARTS ─────────────────────── */
 .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px}
-.card-title{font-size:13px;font-weight:600;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:13px;font-weight:600;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .chart-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .chart-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
 .chart-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px}
 .chart-box canvas{max-height:190px}
 
-/* OVERSTAY */
+/* ── OVERSTAY ───────────────────────────── */
 .ov-banner{background:#fffbeb;border:1px solid #fcd34d;border-left:4px solid var(--warn);border-radius:10px;padding:12px 16px;margin-bottom:20px;display:none}
-.ov-item{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #fef3c7}
+.ov-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #fef3c7;flex-wrap:wrap}
 .ov-item:last-child{border-bottom:none}
 .ov-dot{width:8px;height:8px;background:var(--warn);border-radius:50%;flex-shrink:0}
-.ov-info{flex:1;min-width:0}
+.ov-info{flex:1;min-width:140px}
 .ov-plate{font-weight:600;font-size:13px}
 .ov-meta{font-size:12px;color:var(--muted)}
-.ov-time{font-size:12px;font-weight:700;color:var(--warn);white-space:nowrap}
+.ov-time{font-size:12px;font-weight:700;color:var(--warn);white-space:nowrap;background:#fff3cd;padding:2px 8px;border-radius:20px}
 
-/* TOOLBAR */
+/* ── TOOLBAR ────────────────────────────── */
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-.tb{padding:7px 10px;background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.tb{padding:7px 10px;background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;min-height:36px}
 .tb:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,231,132,.12)}
-.tb-search{flex:1;min-width:180px}
-.count-pill{font-size:12px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 12px;margin-left:auto}
+.tb-search{flex:1;min-width:160px}
+.count-pill{font-size:12px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;white-space:nowrap}
+.toolbar-actions{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 
-/* TABLE */
-.tbl-wrap{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;overflow-x:auto}
+/* ── TABLE ──────────────────────────────── */
+.tbl-wrap{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
-th{padding:9px 11px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:8px 11px;border-bottom:1px solid #f3f4f6;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+th{padding:9px 11px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid var(--border);white-space:nowrap;user-select:none}
+td{padding:9px 11px;border-bottom:1px solid #f3f4f6;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f9fffc}
 .td-mono{font-family:monospace;font-size:12px;color:var(--muted)}
 .td-name{font-weight:500}
 .td-plate{font-family:monospace;font-size:12px;color:var(--info);font-weight:600}
-.td-acts{display:flex;gap:4px;align-items:center}
+.td-acts{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
 
-/* PAGER */
-.pager{display:flex;justify-content:center;align-items:center;gap:10px;padding:12px 0 2px;font-size:13px;color:var(--muted)}
-.pager button{padding:5px 12px;background:#fff;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;color:var(--text)}
+/* ── MOBILE CARD VIEW (log) ─────────────── */
+.entry-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;display:none}
+.ec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ec-name{font-weight:600;font-size:14px}
+.ec-plate{font-family:monospace;font-size:12px;color:var(--info);font-weight:600}
+.ec-row{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-bottom:8px}
+.ec-row span{display:flex;align-items:center;gap:3px}
+.ec-acts{display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border)}
+
+/* ── PAGER ──────────────────────────────── */
+.pager{display:flex;justify-content:center;align-items:center;gap:10px;padding:12px 0 2px;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:8px}
+.pager button{padding:6px 14px;background:#fff;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;color:var(--text);min-height:36px}
 .pager button:hover:not(:disabled){background:var(--mint);border-color:var(--green);color:var(--forest)}
 .pager button:disabled{opacity:.35;cursor:default}
+.pager-info{font-weight:500}
 
-/* BADGES */
-.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+/* ── BADGES ─────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .b-in{background:#fee2e2;color:#991b1b}.b-out{background:var(--mint);color:var(--forest)}
 .b-inbound{background:#dbeafe;color:#1e40af}.b-outbound{background:#ede9fe;color:#5b21b6}
 .b-returns{background:#ffedd5;color:#9a3412}.b-visitor{background:#d1fae5;color:#065f46}
-.b-maint{background:#fef9c3;color:#713f12}.b-def{background:#f3f4f6;color:var(--muted)}
-.b-admin{background:rgba(0,73,62,.12);color:var(--forest)}.b-sec{background:rgba(0,231,132,.1);color:var(--forest)}
-.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:2px}
+.b-maint{background:#fef9c3;color:#713f12}.b-parking{background:#f3e8ff;color:#6b21a8}
+.b-def{background:#f3f4f6;color:var(--muted)}
+.b-admin{background:rgba(0,73,62,.12);color:var(--forest);font-weight:700}
+.b-security{background:rgba(37,99,235,.1);color:var(--info)}
+.b-viewer{background:rgba(107,114,128,.1);color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:2px;flex-shrink:0}
 .dot-r{background:var(--danger)}.dot-g{background:var(--forest)}
 
-/* FORM PANEL */
-.form-panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;border-top:3px solid var(--green)}
+/* ── FORM PANEL ─────────────────────────── */
+.form-panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;border-top:3px solid var(--green)}
 .form-panel h3{font-size:14px;font-weight:600;margin-bottom:3px}
 .fp-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fg{display:flex;flex-direction:column;gap:4px}
 .fg.full{grid-column:1/-1}
 .fg label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
-.fg input,.fg select{padding:8px 10px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none}
-.fg input:focus,.fg select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,231,132,.12)}
-.form-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.fg input,.fg select,.fg textarea{padding:8px 10px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;min-height:36px}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,231,132,.12)}
+.form-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap}
 
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
+/* ── MODAL ──────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:16px;overflow-y:auto}
 .overlay.open{display:flex}
-.modal{background:#fff;border-radius:14px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto}
-.modal-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:640px;margin:auto}
+.modal-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;border-radius:14px 14px 0 0;z-index:1}
 .modal-hd h3{font-size:15px;font-weight:600}
-.modal-x{background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1}
+.modal-x{background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1;padding:0 4px}
 .modal-bd{padding:20px}
-.modal-ft{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-ft{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;border-radius:0 0 14px 14px}
 
-/* USERS */
+/* ── USERS ──────────────────────────────── */
 .user-list{display:flex;flex-direction:column;gap:10px}
-.user-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;align-items:center;gap:12px}
-.user-av{width:38px;height:38px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--forest);flex-shrink:0}
-.user-info{flex:1;min-width:0}
+.user-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.user-av{width:40px;height:40px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:var(--forest);flex-shrink:0}
+.user-info{flex:1;min-width:120px}
 .user-name{font-weight:600;font-size:14px}
-.user-meta{font-size:12px;color:var(--muted)}
+.user-meta{font-size:12px;color:var(--muted);margin-top:1px}
+.user-acts{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 
-/* IMPORT */
-.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:36px;text-align:center;background:var(--bg);cursor:pointer;transition:.2s}
+/* ── IMPORT / PROGRESS ──────────────────── */
+.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:36px 20px;text-align:center;background:var(--bg);cursor:pointer;transition:.2s}
 .drop-zone:hover,.drop-zone.drag-over{border-color:var(--green);background:var(--mint)}
 .drop-zone h3{font-size:15px;font-weight:600;margin-bottom:5px;color:var(--sub)}
 .drop-zone p{font-size:12px;color:var(--muted)}
 .prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px}
 .prog-fill{height:100%;background:var(--green);border-radius:3px;transition:width .3s}
 
-/* HISTORY */
+/* ── HISTORY ────────────────────────────── */
 .hist-result{background:var(--mint);border:1px solid var(--green);border-radius:10px;padding:12px 16px;margin-bottom:14px}
 .hist-result h4{font-size:13px;font-weight:600;color:var(--forest)}
 
-/* UTILS */
-.hidden{display:none!important}
-.empty{text-align:center;padding:36px;color:var(--muted)}
-.text-sm{font-size:12px}.text-muted{color:var(--muted)}
-.mt-1{margin-top:4px}.mb-4{margin-bottom:16px}
-.toast{position:fixed;bottom:20px;right:20px;background:var(--forest);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}
+/* ── ROLE GATE NOTICE ───────────────────── */
+.role-notice{background:var(--mint);border:1px solid var(--green);border-radius:10px;padding:16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px}
+.role-notice-icon{font-size:20px;flex-shrink:0}
+.role-notice h4{font-size:13px;font-weight:600;color:var(--forest);margin-bottom:3px}
+.role-notice p{font-size:12px;color:var(--forest);opacity:.8;line-height:1.5}
+
+/* ── EMPTY STATE ────────────────────────── */
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.empty h4{font-size:14px;font-weight:600;color:var(--sub);margin-bottom:4px}
+.empty p{font-size:13px}
+
+/* ── TOAST ──────────────────────────────── */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--forest);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;max-width:320px;word-break:break-word}
 .toast.show{opacity:1;transform:none}
+
+/* ── UTILS ──────────────────────────────── */
+.hidden{display:none!important}
+.text-sm{font-size:12px}.text-muted{color:var(--muted)}
+.mt-1{margin-top:4px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤900px)
+   ══════════════════════════════════════════ */
+@media(max-width:900px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .chart-2{grid-template-columns:1fr}
+  .chart-3{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤640px)
+   ══════════════════════════════════════════ */
+@media(max-width:640px){
+  /* sidebar: slide-in drawer */
+  :root{--sb-w:260px}
+  .sb{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .sb-close{display:block}
+  .sb-overlay.active{display:block}
+  .burger{display:flex}
+
+  /* content */
+  .content{padding:14px}
+  .topbar{padding:0 14px}
+
+  /* stats: 2-col on mobile */
+  .stats-grid{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .stat-card{padding:12px 14px}
+  .stat-val{font-size:22px}
+
+  /* charts: single col */
+  .chart-2,.chart-3{grid-template-columns:1fr;gap:12px}
+
+  /* form */
+  .form-grid{grid-template-columns:1fr}
+  .fg.full{grid-column:1}
+  .form-panel{padding:16px}
+
+  /* table → hidden, card view shown */
+  .tbl-wrap{display:none}
+  .entry-card{display:block}
+  .pager{padding:8px 0}
+
+  /* toolbar */
+  .toolbar{gap:6px}
+  .tb-search{min-width:100%;order:-1}
+  .count-pill{margin-left:0}
+  .toolbar-actions{margin-left:0;width:100%}
+  .toolbar-actions .btn{flex:1;justify-content:center}
+
+  /* modal */
+  .overlay{padding:0;align-items:flex-end}
+  .modal{border-radius:14px 14px 0 0;max-width:100%;max-height:92vh;overflow-y:auto}
+  .modal-hd{border-radius:14px 14px 0 0}
+  .modal-ft{border-radius:0}
+
+  /* user cards */
+  .user-card{gap:10px}
+
+  /* toast */
+  .toast{bottom:14px;right:14px;left:14px;max-width:none}
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════════ LOGIN ══════════════ -->
+<!-- ════════════ LOGIN ════════════ -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
@@ -201,16 +308,16 @@ tr:hover td{background:#f9fffc}
       <div class="brand-txt">careem <span>quik</span></div>
     </div>
     <h2>Gate Entry System</h2>
-    <p class="sub">Sign in to access the gate log</p>
+    <p class="lsub">Sign in to access the gate log</p>
     <div class="fgrp">
       <div class="lbl">Email address</div>
       <input class="inp" id="li-email" type="email" placeholder="officer@careemquik.com"
-        onkeydown="if(event.key==='Enter')document.getElementById('li-pass').focus()" />
+        onkeydown="if(event.key==='Enter')document.getElementById('li-pass').focus()" autocomplete="email" />
     </div>
     <div class="fgrp">
       <div class="lbl">Password</div>
       <input class="inp" id="li-pass" type="password" placeholder="••••••••"
-        onkeydown="if(event.key==='Enter')doLogin()" />
+        onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password" />
     </div>
     <button class="btn-login" id="btn-login" onclick="doLogin()">
       <div class="spin" id="login-spin"></div>
@@ -220,15 +327,17 @@ tr:hover td{background:#f9fffc}
   </div>
 </div>
 
-<!-- ══════════════ APP ══════════════ -->
+<!-- ════════════ APP ════════════ -->
 <div id="app">
 <div class="layout">
+<div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
-<div class="sb">
+<div class="sb" id="sidebar">
   <div class="sb-brand">
     <div class="cmark" style="width:30px;height:30px;font-size:14px">Q</div>
     <div class="btxt">careem <span>quik</span></div>
+    <button class="sb-close" onclick="closeSidebar()">×</button>
   </div>
   <div class="sb-user">
     <div class="uname" id="sb-name">—</div>
@@ -241,7 +350,7 @@ tr:hover td{background:#f9fffc}
       Dashboard
     </div>
     <div class="nav-item" id="nav-log" onclick="go('log')">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a2 2 0 012-2h8a2 2 0 012 2v13.5a.5.5 0 01-.777.416L8 13.101l-5.223 2.815A.5.5 0 012 15.5V2zm4 1.5v8l4-2-4-6z"/></svg>
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h11A1.5 1.5 0 0115 2.5v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 011 13.5v-11zm2 .5v10h10V3H3zm2 2h6v1H5V5zm0 3h6v1H5V8zm0 3h4v1H5v-1z"/></svg>
       Gate Log
       <span class="nav-badge" id="badge-inside">0</span>
     </div>
@@ -257,7 +366,7 @@ tr:hover td{background:#f9fffc}
       Reports
     </div>
     <div class="nav-item" id="nav-users" onclick="go('users')">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.012.002H7.022zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 004 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002H7.022zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 004 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z"/></svg>
       Users
     </div>
     <div class="nav-item" id="nav-import" onclick="go('import')">
@@ -267,21 +376,26 @@ tr:hover td{background:#f9fffc}
   </div>
   <div class="sb-foot">
     <button class="btn-out" onclick="doSignOut()">Sign out</button>
+    <div class="sb-version">Careem Quik Gate System v2</div>
   </div>
-</div>
+</div><!-- /sidebar -->
 
-<!-- MAIN AREA -->
+<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="topbar-title" id="page-title">Dashboard</div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div class="live-dot" title="Live sync active"></div>
-      <span class="text-sm text-muted">Live</span>
+    <div class="topbar-left">
+      <button class="burger" onclick="openSidebar()" aria-label="Menu">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      </button>
+      <div class="topbar-title" id="page-title">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="live-chip"><div class="live-dot"></div><span>Live</span></div>
     </div>
   </div>
   <div class="content">
 
-    <!-- DASHBOARD -->
+    <!-- ═══ DASHBOARD ═══ -->
     <div id="screen-dashboard" class="screen">
       <div class="stats-grid">
         <div class="stat-card sc-all"><div class="stat-lbl">Total records</div><div class="stat-val" id="st-total">—</div><div class="stat-sub">All time</div></div>
@@ -290,7 +404,7 @@ tr:hover td{background:#f9fffc}
         <div class="stat-card sc-out"><div class="stat-lbl">Exited today</div><div class="stat-val" id="st-out">—</div><div class="stat-sub">checked out</div></div>
       </div>
       <div class="ov-banner" id="ov-banner">
-        <div style="font-size:13px;font-weight:700;color:var(--warn);margin-bottom:10px">⚠ Overstay alerts — vehicles inside more than 4 hours</div>
+        <div style="font-size:13px;font-weight:700;color:var(--warn);margin-bottom:8px">⚠ Overstay alerts — vehicles inside more than 4 hours</div>
         <div id="ov-list"></div>
       </div>
       <div class="chart-2">
@@ -298,9 +412,12 @@ tr:hover td{background:#f9fffc}
         <div class="chart-box"><div class="card-title">Purpose breakdown</div><canvas id="ch-purpose"></canvas></div>
       </div>
       <div class="chart-3">
-        <div class="chart-box"><div class="card-title">Vehicle type</div><canvas id="ch-vtype"></canvas></div>
+        <div class="chart-box"><div class="card-title">Vehicle type mix</div><canvas id="ch-vtype"></canvas></div>
         <div class="chart-box"><div class="card-title">Peak arrival hours</div><canvas id="ch-hours"></canvas></div>
-        <div class="chart-box"><div class="card-title">Top companies — 30 days</div><div id="top-cos" style="font-size:13px;padding-top:4px"></div></div>
+        <div class="chart-box">
+          <div class="card-title">Top companies <span class="text-sm text-muted" style="font-weight:400">30 days</span></div>
+          <div id="top-cos" style="font-size:13px;padding-top:4px"></div>
+        </div>
       </div>
       <div class="chart-2">
         <div class="card"><div class="card-title">Today by officer</div><div id="officer-tbl"></div></div>
@@ -308,20 +425,30 @@ tr:hover td{background:#f9fffc}
       </div>
     </div>
 
-    <!-- GATE LOG -->
+    <!-- ═══ GATE LOG ═══ -->
     <div id="screen-log" class="screen hidden">
+      <!-- Security check-in only notice -->
+      <div class="role-notice hidden" id="security-notice">
+        <div class="role-notice-icon">🔐</div>
+        <div>
+          <h4>Security access</h4>
+          <p>You can add new vehicle entries below. Viewing and editing existing records requires admin or viewer access.</p>
+        </div>
+      </div>
+
+      <!-- Add entry form -->
       <div id="add-form-wrap" style="display:none">
         <div class="form-panel">
           <h3>New gate entry — check in</h3>
           <p class="fp-sub">Date and time in are stamped automatically when you click Check In.</p>
           <div class="form-grid">
-            <div class="fg full"><label>Driver name *</label><input id="f-driver" placeholder="Full name" /></div>
-            <div class="fg"><label>Vehicle plate *</label><input id="f-plate" placeholder="DXB 12345" /></div>
+            <div class="fg full"><label>Driver name *</label><input id="f-driver" placeholder="Full name" autocomplete="off" /></div>
+            <div class="fg"><label>Vehicle plate *</label><input id="f-plate" placeholder="DXB 12345" autocomplete="off" /></div>
             <div class="fg"><label>Plate source</label><select id="f-psrc"><option value="">Select...</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option><option>GCC / Other</option></select></div>
             <div class="fg"><label>Vehicle type</label><select id="f-vtype"><option value="">Select...</option><option>Heavy Truck / Trailer</option><option>Van</option><option>Car</option><option>3-Ton Truck</option></select></div>
-            <div class="fg"><label>Emirates ID</label><input id="f-eid" placeholder="784-XXXX-XXXXXXX-X" /></div>
-            <div class="fg"><label>Contact number</label><input id="f-contact" placeholder="05X-XXXXXXX" /></div>
-            <div class="fg"><label>Transport company</label><input id="f-co" /></div>
+            <div class="fg"><label>Emirates ID</label><input id="f-eid" placeholder="784-XXXX-XXXXXXX-X" inputmode="numeric" /></div>
+            <div class="fg"><label>Contact number</label><input id="f-contact" placeholder="05X-XXXXXXX" inputmode="tel" /></div>
+            <div class="fg"><label>Transport company</label><input id="f-co" autocomplete="off" /></div>
             <div class="fg"><label>Purpose of visit</label><select id="f-purpose"><option value="">Select...</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select></div>
             <div class="fg"><label>Dock number</label><select id="f-dock"><option value="">Select...</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
             <div class="fg"><label>Security officer</label><select id="f-officer"><option value="">Select...</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option></select></div>
@@ -333,43 +460,54 @@ tr:hover td{background:#f9fffc}
           </div>
         </div>
       </div>
-      <div class="toolbar">
-        <input class="tb tb-search" type="search" id="log-q" placeholder="Search driver, plate, company, Emirates ID..." oninput="filterLog()" />
-        <input class="tb" type="date" id="log-date" onchange="filterLog()" style="width:148px" />
-        <select class="tb" id="log-purpose" onchange="filterLog()">
-          <option value="">All purposes</option><option>Inbound Delivery</option><option>Outbound Dispatch</option>
-          <option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option>
-        </select>
-        <select class="tb" id="log-officer" onchange="filterLog()">
-          <option value="">All officers</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option>
-        </select>
-        <select class="tb" id="log-status" onchange="filterLog()">
-          <option value="">All status</option><option value="inside">Inside</option><option value="out">Exited</option>
-        </select>
-        <span class="count-pill" id="log-count">— records</span>
-        <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Export CSV</button>
-        <button class="btn btn-green btn-sm" onclick="toggleForm()">+ Add entry</button>
-      </div>
-      <div class="tbl-wrap">
-        <table>
-          <colgroup><col style="width:88px"><col style="width:56px"><col style="width:145px"><col style="width:132px"><col style="width:105px"><col style="width:138px"><col style="width:42px"><col style="width:64px"><col style="width:88px"><col style="width:100px"></colgroup>
-          <thead><tr><th>Date in</th><th>Time</th><th>Driver</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Dock</th><th>Officer</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="log-body"></tbody>
-        </table>
-      </div>
-      <div class="pager">
-        <button id="pg-prev" onclick="changePg(-1)">← Prev</button>
-        <span id="pg-info" style="font-weight:500">Page 1 of 1</span>
-        <button id="pg-next" onclick="changePg(1)">Next →</button>
+
+      <!-- Log table (admin/viewer only) -->
+      <div id="log-table-section">
+        <div class="toolbar">
+          <input class="tb tb-search" type="search" id="log-q" placeholder="Search driver, plate, company, Emirates ID..." oninput="filterLog()" />
+          <input class="tb" type="date" id="log-date" onchange="filterLog()" style="width:145px" title="Filter by date" />
+          <select class="tb" id="log-purpose" onchange="filterLog()"><option value="">All purposes</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select>
+          <select class="tb" id="log-platesrc" onchange="filterLog()"><option value="">All sources</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option><option>GCC / Other</option></select>
+          <select class="tb" id="log-officer" onchange="filterLog()"><option value="">All officers</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option></select>
+          <select class="tb" id="log-status" onchange="filterLog()">
+            <option value="">All status</option><option value="inside">Inside</option><option value="out">Exited</option>
+          </select>
+          <span class="count-pill" id="log-count">— records</span>
+          <div class="toolbar-actions">
+            <button class="btn btn-outline btn-sm" onclick="clearFilters()">Clear filters</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Export CSV</button>
+            <button class="btn btn-green btn-sm" id="btn-add-entry" onclick="toggleForm()">+ Add entry</button>
+          </div>
+        </div>
+
+        <!-- Desktop table -->
+        <div class="tbl-wrap">
+          <table>
+            <colgroup><col style="width:88px"><col style="width:56px"><col style="width:145px"><col style="width:130px"><col style="width:105px"><col style="width:130px"><col style="width:42px"><col style="width:64px"><col style="width:88px"><col style="width:110px"></colgroup>
+            <thead><tr><th>Date in</th><th>Time</th><th>Driver</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Dock</th><th>Officer</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="log-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Mobile card view -->
+        <div id="log-cards"></div>
+
+        <div class="pager">
+          <button id="pg-prev" onclick="changePg(-1)">← Prev</button>
+          <span class="pager-info" id="pg-info">Page 1 of 1</span>
+          <button id="pg-next" onclick="changePg(1)">Next →</button>
+        </div>
       </div>
     </div>
 
-    <!-- VEHICLE HISTORY -->
+    <!-- ═══ VEHICLE HISTORY ═══ -->
     <div id="screen-history" class="screen hidden">
       <p class="text-muted text-sm mb-4" style="margin-bottom:14px">Search by plate number to see every visit a vehicle has made.</p>
-      <div style="display:flex;gap:10px;max-width:520px;margin-bottom:16px">
-        <input class="tb" id="hist-q" placeholder="e.g. DXB 53908" style="flex:1" onkeydown="if(event.key==='Enter')searchHist()" />
+      <div style="display:flex;gap:10px;max-width:520px;margin-bottom:16px;flex-wrap:wrap">
+        <input class="tb" id="hist-q" placeholder="e.g. DXB 53908" style="flex:1;min-width:160px"
+          onkeydown="if(event.key==='Enter')searchHist()" />
         <button class="btn btn-primary" onclick="searchHist()">Search</button>
+        <button class="btn btn-outline" onclick="clearHist()">Clear</button>
       </div>
       <div id="hist-result" class="hist-result hidden"></div>
       <div id="hist-tbl-wrap" class="tbl-wrap hidden">
@@ -379,10 +517,16 @@ tr:hover td{background:#f9fffc}
           <tbody id="hist-body"></tbody>
         </table>
       </div>
-      <div id="hist-empty" class="empty hidden">🔍 No results found for this plate number.</div>
+      <!-- History mobile cards -->
+      <div id="hist-cards"></div>
+      <div id="hist-empty" class="empty hidden">
+        <div class="empty-icon">🔍</div>
+        <h4>No results found</h4>
+        <p>No visits found for this plate number.</p>
+      </div>
     </div>
 
-    <!-- REPORTS -->
+    <!-- ═══ REPORTS (admin only) ═══ -->
     <div id="screen-reports" class="screen hidden">
       <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat-card sc-today"><div class="stat-lbl">This week</div><div class="stat-val" id="rp-week">—</div></div>
@@ -393,32 +537,47 @@ tr:hover td{background:#f9fffc}
         <div class="chart-box"><div class="card-title">Monthly trend — this year</div><canvas id="rp-monthly"></canvas></div>
         <div class="chart-box"><div class="card-title">Purpose breakdown — all time</div><canvas id="rp-purpose"></canvas></div>
       </div>
-      <div class="card">
+      <div class="card" style="margin-bottom:20px">
         <div class="card-title">Officer performance — this month</div>
         <div id="rp-officers"></div>
       </div>
+      <div class="card">
+        <div class="card-title">
+          Export full dataset
+          <button class="btn btn-outline btn-sm" onclick="exportAll()">↓ Export all records</button>
+        </div>
+        <p class="text-sm text-muted">Downloads every record with all fields as a CSV file.</p>
+      </div>
     </div>
 
-    <!-- USERS -->
+    <!-- ═══ USERS (admin only) ═══ -->
     <div id="screen-users" class="screen hidden">
       <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
         <button class="btn btn-green" onclick="openUserModal()">+ Add user</button>
       </div>
+      <div class="card mb-4" style="margin-bottom:16px;background:#fffbeb;border-color:#fcd34d">
+        <div style="font-size:13px;font-weight:600;color:var(--warn);margin-bottom:4px">Role permissions</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;color:var(--sub)">
+          <div><strong style="color:var(--forest)">Admin</strong> — Full access: view, add, edit, delete records, manage users, reports, import</div>
+          <div><strong style="color:var(--info)">Security</strong> — Check-in only: can add new entries, nothing else</div>
+          <div><strong style="color:var(--muted)">Viewer</strong> — Read only: view, filter, search and export records, no changes</div>
+        </div>
+      </div>
       <div class="user-list" id="user-list"></div>
     </div>
 
-    <!-- IMPORT -->
+    <!-- ═══ IMPORT (admin only) ═══ -->
     <div id="screen-import" class="screen hidden">
       <div class="card" style="max-width:580px">
         <div class="card-title">Import 990 historical records</div>
-        <p class="text-sm text-muted" style="margin-bottom:16px">Click below to load all records from your original Google Sheets log into the database. Only do this once — check that the log is empty first.</p>
+        <p class="text-sm text-muted mb-4" style="margin-bottom:16px">Click below to load all records from your original Google Sheets log into the database. Only do this once — the table should be empty first.</p>
         <button class="btn btn-green" id="seed-btn" onclick="doSeed()">↑ Import 990 records now</button>
         <div id="seed-prog" class="hidden" style="margin-top:14px">
           <div style="font-size:13px;font-weight:500;margin-bottom:6px" id="seed-lbl">Starting import...</div>
           <div class="prog-bar"><div class="prog-fill" id="seed-fill" style="width:0%"></div></div>
         </div>
         <div id="seed-done" class="hidden" style="margin-top:10px;color:var(--forest);font-size:13px;font-weight:600">✓ All 990 records imported successfully!</div>
-        <hr style="margin:22px 0;border:none;border-top:1px solid var(--border)">
+        <hr class="divider">
         <div class="card-title" style="margin-bottom:8px">Import via CSV file</div>
         <p class="text-sm text-muted" style="margin-bottom:12px">Export any spreadsheet as CSV and drop it here. Minimum required columns: driver_name, plate, date_in, time_in.</p>
         <div class="drop-zone" id="drop-z" onclick="document.getElementById('csv-inp').click()"
@@ -426,7 +585,7 @@ tr:hover td{background:#f9fffc}
           ondragleave="this.classList.remove('drag-over')"
           ondrop="handleDrop(event)">
           <h3>Drop CSV file here or click to browse</h3>
-          <p>Accepted format: .csv</p>
+          <p>Accepted: .csv files</p>
           <input id="csv-inp" type="file" accept=".csv" style="display:none" onchange="handleCSV(this.files[0])">
         </div>
         <div id="csv-status" class="hidden" style="margin-top:10px;font-size:13px;font-weight:500"></div>
@@ -438,7 +597,7 @@ tr:hover td{background:#f9fffc}
 </div><!-- /layout -->
 </div><!-- /app -->
 
-<!-- EDIT MODAL -->
+<!-- EDIT MODAL (admin only) -->
 <div class="overlay" id="edit-overlay">
   <div class="modal">
     <div class="modal-hd"><h3>Edit entry</h3><button class="modal-x" onclick="closeModal('edit-overlay')">×</button></div>
@@ -469,7 +628,7 @@ tr:hover td{background:#f9fffc}
   </div>
 </div>
 
-<!-- USER MODAL -->
+<!-- USER MODAL (admin only) -->
 <div class="overlay" id="user-overlay">
   <div class="modal" style="max-width:420px">
     <div class="modal-hd"><h3>Add new user</h3><button class="modal-x" onclick="closeModal('user-overlay')">×</button></div>
@@ -480,8 +639,9 @@ tr:hover td{background:#f9fffc}
         <div class="fg"><label>Password</label><input id="u-pass" type="password" placeholder="Min 8 characters"></div>
         <div class="fg"><label>Role</label>
           <select id="u-role">
-            <option value="security">Security — add entries and check out vehicles</option>
-            <option value="admin">Admin — full access including edit and delete</option>
+            <option value="security">Security — add new entries only</option>
+            <option value="viewer">Viewer — view, filter and export only</option>
+            <option value="admin">Admin — full access</option>
           </select>
         </div>
       </div>
@@ -499,27 +659,29 @@ tr:hover td{background:#f9fffc}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-
 // ╔══════════════════════════════════════════════════════════════╗
-// ║  STEP 1 OF 1 — paste your two Supabase values below         ║
-// ║  Find them at: supabase.com → your project →                ║
-// ║  Project Settings → API                                     ║
+// ║  Paste your Supabase values below (from Project Settings → API) ║
 // ╚══════════════════════════════════════════════════════════════╝
 const SUPABASE_URL = 'https://smaotbyfilafkrikcfse.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtYW90YnlmaWxhZmtyaWtjZnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzEwNjcsImV4cCI6MjA5MTMwNzA2N30.ZdLH0q_X0evFKNcHLAURU9xEevXAi1hyR4wTSJmhfhA';
-// ══════════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════════
 
-// ── globals ──────────────────────────────────────────────────────────────────
+// ── globals ────────────────────────────────────────────────────
 let _sb, _user, _profile, _charts={}, _rt=null;
 let _rows=[], _page=1, _total=0;
 const PAGE=25;
-const PC={'Inbound Delivery':'b-inbound','Outbound Dispatch':'b-outbound','Returns / RTO':'b-returns','Visitor / Management':'b-visitor','Maintenance / Facility':'b-maint','Staff Parking':'b-def'};
+const ROLE = { ADMIN:'admin', SECURITY:'security', VIEWER:'viewer' };
+const PC = {
+  'Inbound Delivery':'b-inbound','Outbound Dispatch':'b-outbound',
+  'Returns / RTO':'b-returns','Visitor / Management':'b-visitor',
+  'Maintenance / Facility':'b-maint','Staff Parking':'b-parking'
+};
 
-// ── boot ─────────────────────────────────────────────────────────────────────
+// ── boot ───────────────────────────────────────────────────────
 window.addEventListener('load', async function() {
   if (!SUPABASE_URL || SUPABASE_URL.includes('PASTE_')) {
     document.getElementById('login-err').textContent =
-      'Open index.html in Notepad and fill in SUPABASE_URL and SUPABASE_KEY at the top of the file, then re-upload to GitHub.';
+      'Open index.html in Notepad and fill in SUPABASE_URL and SUPABASE_KEY near the top of the script section, then re-upload to GitHub.';
     return;
   }
   try {
@@ -532,12 +694,11 @@ window.addEventListener('load', async function() {
       if (ev==='SIGNED_OUT') { _user=null; _profile=null; show('login'); }
     });
   } catch(e) {
-    document.getElementById('login-err').textContent = 'Could not connect to Supabase: ' + e.message;
+    document.getElementById('login-err').textContent = 'Connection error: '+e.message;
   }
 });
 
 async function afterLogin() {
-  // fetch profile — retry once since DB trigger may take a moment
   let { data:prof } = await _sb.from('profiles').select('*').eq('id',_user.id).single();
   if (!prof) {
     await new Promise(r=>setTimeout(r,1200));
@@ -545,71 +706,113 @@ async function afterLogin() {
     prof = p2 || { role:'security', name:_user.email.split('@')[0] };
   }
   _profile = prof;
-  document.getElementById('sb-name').textContent = _profile.name || _user.email;
-  document.getElementById('sb-role').textContent = (_profile.role||'security').toUpperCase();
-  if (_profile.role==='admin') document.getElementById('admin-nav').style.display='block';
+  $('sb-name').textContent = _profile.name || _user.email;
+  $('sb-role').textContent = (_profile.role||'security').toUpperCase();
+
+  // Show admin nav only for admins
+  if (isAdmin()) $('admin-nav').style.display = 'block';
+
   show('app');
   startRealtime();
   go('dashboard');
 }
 
-// ── auth ─────────────────────────────────────────────────────────────────────
+// ── role helpers ───────────────────────────────────────────────
+const isAdmin    = () => _profile?.role === ROLE.ADMIN;
+const isSecurity = () => _profile?.role === ROLE.SECURITY;
+const isViewer   = () => _profile?.role === ROLE.VIEWER;
+const canWrite   = () => isAdmin() || isSecurity();
+const canView    = () => isAdmin() || isViewer();
+
+// ── auth ───────────────────────────────────────────────────────
 async function doLogin() {
-  const email = document.getElementById('li-email').value.trim();
-  const pass  = document.getElementById('li-pass').value;
-  const err   = document.getElementById('login-err');
-  err.textContent = '';
-  if (!email||!pass) { err.textContent='Please enter your email and password.'; return; }
-  setBtnLoading(true);
-  const { error } = await _sb.auth.signInWithPassword({ email, password:pass });
-  setBtnLoading(false);
-  if (error) err.textContent = error.message;
+  const email=$('li-email').value.trim(), pass=$('li-pass').value;
+  const err=$('login-err');
+  err.textContent='';
+  if(!email||!pass){err.textContent='Please enter your email and password.';return;}
+  setLoginLoading(true);
+  const{error}=await _sb.auth.signInWithPassword({email,password:pass});
+  setLoginLoading(false);
+  if(error){
+    err.textContent = error.message.includes('Invalid login')
+      ? 'Incorrect email or password. Please try again.'
+      : error.message;
+  }
 }
-function setBtnLoading(on) {
-  document.getElementById('btn-login').disabled = on;
-  document.getElementById('login-spin').style.display = on ? 'block' : 'none';
-  document.getElementById('login-txt').textContent = on ? 'Signing in...' : 'Sign in';
+function setLoginLoading(on){
+  $('btn-login').disabled=on;
+  $('login-spin').style.display=on?'block':'none';
+  $('login-txt').textContent=on?'Signing in...':'Sign in';
 }
-async function doSignOut() {
-  if (_rt) { _sb.removeChannel(_rt); _rt=null; }
+async function doSignOut(){
+  if(_rt){_sb.removeChannel(_rt);_rt=null;}
   await _sb.auth.signOut();
 }
 
-// ── realtime ─────────────────────────────────────────────────────────────────
-function startRealtime() {
-  _rt = _sb.channel('gel')
+// ── realtime ───────────────────────────────────────────────────
+function startRealtime(){
+  _rt=_sb.channel('gel')
     .on('postgres_changes',{event:'*',schema:'public',table:'gate_entries'},()=>{
       toast('Log updated live');
-      if (!$('screen-dashboard').classList.contains('hidden')) loadDash();
-      if (!$('screen-log').classList.contains('hidden')) loadLog();
+      if(!$('screen-dashboard').classList.contains('hidden'))loadDash();
+      if(!$('screen-log').classList.contains('hidden'))loadLog();
     }).subscribe();
 }
 
-// ── display helpers ───────────────────────────────────────────────────────────
-function show(which) {
-  $('login-screen').style.display = which==='login' ? 'flex' : 'none';
-  $('app').style.display          = which==='app'   ? 'block': 'none';
+// ── display ────────────────────────────────────────────────────
+function show(which){
+  $('login-screen').style.display=which==='login'?'flex':'none';
+  $('app').style.display=which==='app'?'block':'none';
 }
-function $(id){ return document.getElementById(id); }
+function $(id){return document.getElementById(id);}
 
-// ── navigation ───────────────────────────────────────────────────────────────
-function go(s) {
+// ── sidebar mobile ─────────────────────────────────────────────
+function openSidebar(){$('sidebar').classList.add('open');$('sb-overlay').classList.add('active');}
+function closeSidebar(){$('sidebar').classList.remove('open');$('sb-overlay').classList.remove('active');}
+
+// ── navigation ─────────────────────────────────────────────────
+function go(s){
+  // block non-admins from admin screens
+  if(['reports','users','import'].includes(s)&&!isAdmin()){toast('Admin access required',1);return;}
+
   document.querySelectorAll('.screen').forEach(x=>x.classList.add('hidden'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   $('screen-'+s).classList.remove('hidden');
-  const ni=$('nav-'+s); if(ni)ni.classList.add('active');
+  const ni=$('nav-'+s);if(ni)ni.classList.add('active');
   const T={dashboard:'Dashboard',log:'Gate Log',history:'Vehicle History',reports:'Reports',users:'User Management',import:'Import Data'};
   $('page-title').textContent=T[s]||s;
-  if(s==='dashboard'){loadDash();}
-  else if(s==='log'){_page=1;loadLog();}
-  else if(s==='reports'){loadReports();}
-  else if(s==='users'){loadUsers();}
+  closeSidebar();
+
+  if(s==='dashboard')loadDash();
+  else if(s==='log'){_page=1;setupLogForRole();loadLog();}
+  else if(s==='reports')loadReports();
+  else if(s==='users')loadUsers();
 }
 
-// ── dashboard ────────────────────────────────────────────────────────────────
-async function loadDash() {
+// ── log role setup ─────────────────────────────────────────────
+function setupLogForRole(){
+  const secNotice=$('security-notice');
+  const logSection=$('log-table-section');
+  const addBtn=$('btn-add-entry');
+
+  if(isSecurity()){
+    // Security: show check-in form only, hide table
+    secNotice.classList.remove('hidden');
+    logSection.classList.add('hidden');
+    toggleForm(true); // auto-open form
+  } else {
+    // Admin / Viewer: show table
+    secNotice.classList.add('hidden');
+    logSection.classList.remove('hidden');
+    // Viewer: hide add button
+    if(addBtn) addBtn.style.display = isViewer() ? 'none' : '';
+  }
+}
+
+// ── dashboard ──────────────────────────────────────────────────
+async function loadDash(){
   const today=new Date().toISOString().split('T')[0];
-  const [tot,tod,ins,out]=await Promise.all([
+  const[tot,tod,ins,out]=await Promise.all([
     _sb.from('gate_entries').select('*',{count:'exact',head:true}),
     _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('date_in',today),
     _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('check_in',true).eq('check_out',false),
@@ -620,24 +823,35 @@ async function loadDash() {
   $('st-inside').textContent=ins.count||0;
   $('st-out').textContent=out.count||0;
   $('st-today-sub').textContent=new Date().toLocaleDateString('en-AE',{weekday:'short',day:'numeric',month:'short'});
-  const nb=$('badge-inside');
-  if(ins.count>0){nb.textContent=ins.count;nb.style.display='inline';}else{nb.style.display='none';}
 
-  const {data:inNow}=await _sb.from('gate_entries').select('driver_name,plate,time_in,date_in,officer').eq('check_out',false).eq('check_in',true);
+  // inside badge on nav
+  const nb=$('badge-inside');
+  if(ins.count>0){nb.textContent=ins.count;nb.style.display='inline';}
+  else{nb.style.display='none';}
+
+  // overstay check
+  const{data:inNow}=await _sb.from('gate_entries').select('driver_name,plate,time_in,date_in,officer').eq('check_out',false).eq('check_in',true);
   const now=new Date();
   const ov=(inNow||[]).filter(e=>e.date_in&&e.time_in&&(now-new Date(e.date_in+'T'+e.time_in))>4*3600000);
   const banner=$('ov-banner');
   if(ov.length>0){
     banner.style.display='block';
     $('st-ov-lbl').textContent=ov.length+' overstay';
-    $('ov-list').innerHTML=ov.map(e=>{const hrs=((now-new Date(e.date_in+'T'+e.time_in))/3600000).toFixed(1);return '<div class="ov-item"><div class="ov-dot"></div><div class="ov-info"><div class="ov-plate">'+(e.plate||'—')+' — '+(e.driver_name||'—')+'</div><div class="ov-meta">Officer: '+(e.officer||'—')+' · Entered: '+(e.time_in||'').slice(0,5)+'</div></div><div class="ov-time">'+hrs+'h inside</div></div>';}).join('');
-  }else{banner.style.display='none';$('st-ov-lbl').textContent='no overstays';}
+    $('ov-list').innerHTML=ov.map(e=>{
+      const hrs=((now-new Date(e.date_in+'T'+e.time_in))/3600000).toFixed(1);
+      return '<div class="ov-item"><div class="ov-dot"></div><div class="ov-info"><div class="ov-plate">'+(e.plate||'—')+' — '+(e.driver_name||'—')+'</div><div class="ov-meta">Officer: '+(e.officer||'—')+' · Entered: '+(e.time_in||'').slice(0,5)+'</div></div><div class="ov-time">'+hrs+'h</div></div>';
+    }).join('');
+  } else {
+    banner.style.display='none';
+    $('st-ov-lbl').textContent='no overstays';
+  }
 
+  // charts
   const d14=new Date();d14.setDate(d14.getDate()-13);
   const d30=new Date();d30.setDate(d30.getDate()-29);
-  const {data:r14}=await _sb.from('gate_entries').select('date_in,purpose,vehicle_type,time_in,company,dock,officer').gte('date_in',d14.toISOString().split('T')[0]);
-  const {data:r30}=await _sb.from('gate_entries').select('company').gte('date_in',d30.toISOString().split('T')[0]);
-  const {data:rtod}=await _sb.from('gate_entries').select('officer,check_out,dock').eq('date_in',today);
+  const{data:r14}=await _sb.from('gate_entries').select('date_in,purpose,vehicle_type,time_in,company,dock,officer').gte('date_in',d14.toISOString().split('T')[0]);
+  const{data:r30}=await _sb.from('gate_entries').select('company').gte('date_in',d30.toISOString().split('T')[0]);
+  const{data:rtod}=await _sb.from('gate_entries').select('officer,check_out,dock').eq('date_in',today);
   const rows=r14||[];
 
   // Trend
@@ -647,7 +861,7 @@ async function loadDash() {
 
   // Purpose
   const pur={};rows.forEach(e=>{if(e.purpose)pur[e.purpose]=(pur[e.purpose]||0)+1;});
-  mkC('ch-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12'],borderWidth:1.5}]);
+  mkC('ch-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3','#f3e8ff'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12','#6b21a8'],borderWidth:1.5}]);
 
   // Vehicle type
   const vt={};rows.forEach(e=>{if(e.vehicle_type)vt[e.vehicle_type]=(vt[e.vehicle_type]||0)+1;});
@@ -661,61 +875,110 @@ async function loadDash() {
   // Top companies
   const cos={};(r30||[]).forEach(e=>{if(e.company){const c=e.company.trim();cos[c]=(cos[c]||0)+1;}});
   const top=Object.entries(cos).sort((a,b)=>b[1]-a[1]).slice(0,8);const mx=top[0]?.[1]||1;
-  $('top-cos').innerHTML=top.map(([co,cnt])=>'<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><div style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+co+'">'+co+'</div><div style="width:'+Math.round(cnt/mx*70)+'px;height:6px;background:var(--green);border-radius:3px;min-width:3px"></div><div style="font-size:12px;font-weight:600;color:var(--forest);width:24px;text-align:right">'+cnt+'</div></div>').join('');
+  $('top-cos').innerHTML=top.length?top.map(([co,cnt])=>'<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><div style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+co+'">'+co+'</div><div style="width:'+Math.round(cnt/mx*70)+'px;height:6px;background:var(--green);border-radius:3px;min-width:3px"></div><div style="font-size:12px;font-weight:600;color:var(--forest);width:24px;text-align:right">'+cnt+'</div></div>').join(''):'<p class="text-muted text-sm">No data in last 30 days.</p>';
 
   // Officer today
   const ofs={};(rtod||[]).forEach(e=>{if(!e.officer)return;if(!ofs[e.officer])ofs[e.officer]={t:0,o:0};ofs[e.officer].t++;if(e.check_out)ofs[e.officer].o++;});
   $('officer-tbl').innerHTML=Object.keys(ofs).length
-    ?'<table style="width:100%;font-size:13px"><thead><tr><th style="text-align:left;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Officer</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Checked In</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Checked Out</th></tr></thead><tbody>'+Object.entries(ofs).map(([o,v])=>'<tr><td style="padding:8px 0;border-bottom:1px solid var(--border)">'+o+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);font-weight:600">'+v.t+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);font-weight:600;color:var(--forest)">'+v.o+'</td></tr>').join('')+'</tbody></table>'
+    ?'<table style="width:100%;font-size:13px"><thead><tr><th style="text-align:left;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)">Officer</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)">In</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)">Out</th></tr></thead><tbody>'+Object.entries(ofs).map(([o,v])=>'<tr><td style="padding:8px 0;border-bottom:1px solid var(--border)">'+o+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);font-weight:600">'+v.t+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);font-weight:600;color:var(--forest)">'+v.o+'</td></tr>').join('')+'</tbody></table>'
     :'<p class="text-muted text-sm">No entries today yet.</p>';
 
   // Docks
   const dks={};(rtod||[]).forEach(e=>{if(e.dock){const k='Dock '+e.dock;dks[k]=(dks[k]||0)+1;}});
   if(Object.keys(dks).length>0)mkC('ch-docks','bar',Object.keys(dks),[{data:Object.values(dks),backgroundColor:'#00E784',borderRadius:4}]);
+  else {const el=$('ch-docks');if(el){const p=document.createElement('p');p.className='text-muted text-sm';p.textContent='No dock data today.';el.replaceWith(p);}}
 }
 
-function mkC(id,type,labels,datasets,extra={}) {
+function mkC(id,type,labels,datasets,extra={}){
   const el=$(id);if(!el)return;
   if(_charts[id])_charts[id].destroy();
-  _charts[id]=new Chart(el,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:type==='doughnut'}},scales:type!=='doughnut'?{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:10}}}}:{},...extra}});
+  _charts[id]=new Chart(el,{type,data:{labels,datasets},options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:type==='doughnut',position:'bottom',labels:{font:{size:11},padding:10}}},
+    scales:type!=='doughnut'?{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:10}}}}:{},
+    ...extra
+  }});
 }
 
-// ── gate log ──────────────────────────────────────────────────────────────────
-async function loadLog() {
-  const q=(($('log-q').value)||'').trim(),date=$('log-date').value,purp=$('log-purpose').value,off=$('log-officer').value,stat=$('log-status').value;
+// ── gate log ───────────────────────────────────────────────────
+async function loadLog(){
+  // Security officers only get check-in form — no table
+  if(isSecurity()) return;
+
+  const q=($('log-q').value||'').trim();
+  const date=$('log-date').value;
+  const purp=$('log-purpose').value;
+  const plsrc=$('log-platesrc').value;
+  const off=$('log-officer').value;
+  const stat=$('log-status').value;
+
   let qry=_sb.from('gate_entries').select('*',{count:'exact'}).order('id',{ascending:false});
   if(date)qry=qry.eq('date_in',date);
   if(purp)qry=qry.eq('purpose',purp);
+  if(plsrc)qry=qry.eq('plate_source',plsrc);
   if(off)qry=qry.eq('officer',off);
   if(stat==='inside')qry=qry.eq('check_out',false).eq('check_in',true);
   if(stat==='out')qry=qry.eq('check_out',true);
   if(q)qry=qry.or('driver_name.ilike.%'+q+'%,plate.ilike.%'+q+'%,company.ilike.%'+q+'%,emirates_id.ilike.%'+q+'%');
   qry=qry.range((_page-1)*PAGE,_page*PAGE-1);
+
   const{data,count}=await qry;
   _rows=data||[];_total=count||0;
   renderLog();
 }
+
 function filterLog(){_page=1;loadLog();}
 function changePg(d){_page=Math.max(1,_page+d);loadLog();}
+function clearFilters(){
+  ['log-q','log-date'].forEach(id=>$(id).value='');
+  ['log-purpose','log-platesrc','log-officer','log-status'].forEach(id=>$(id).selectedIndex=0);
+  filterLog();
+}
 
 function renderLog(){
-  const isA=_profile?.role==='admin';
+  const isA=isAdmin();
   $('log-count').textContent=_total.toLocaleString()+' records';
+
+  if(_rows.length===0){
+    $('log-body').innerHTML='<tr><td colspan="10"><div class="empty"><div class="empty-icon">📋</div><h4>No records found</h4><p>Try adjusting your filters.</p></div></td></tr>';
+    $('log-cards').innerHTML='<div class="empty"><div class="empty-icon">📋</div><h4>No records found</h4><p>Try adjusting your filters.</p></div>';
+    const tp=1;$('pg-info').textContent='Page 1 of 1';$('pg-prev').disabled=true;$('pg-next').disabled=true;
+    return;
+  }
+
+  // Desktop table rows
   $('log-body').innerHTML=_rows.map(e=>{
     const st=e.check_out
       ?'<span class="badge b-out"><span class="dot dot-g"></span>'+(e.time_out||'').slice(0,5)+'</span>'
       :'<span class="badge b-in"><span class="dot dot-r"></span>Inside</span>';
-    const co=!e.check_out?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
-    const ad=isA?'<button class="btn-edit" onclick="openEdit('+e.id+')">Edit</button> <button class="btn-del" onclick="doDelete('+e.id+')">Del</button>':'';
-    return '<tr><td class="td-mono">'+(e.date_in||'—')+'</td><td class="td-mono">'+(e.time_in||'—').slice(0,5)+'</td><td class="td-name" title="'+(e.driver_name||'')+'">'+(e.driver_name||'—')+'</td><td title="'+(e.company||'')+'">'+(e.company||'—')+'</td><td class="td-plate">'+(e.plate||'—')+'</td><td><span class="badge '+(PC[e.purpose]||'b-def')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center;font-weight:600">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+st+'</td><td class="td-acts">'+co+' '+ad+'</td></tr>';
-  }).join('')||'<tr><td colspan="10" class="empty">No records found.</td></tr>';
+    // checkout button: admin only (viewer sees status only)
+    const co=isA&&!e.check_out?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
+    const ed=isA?'<button class="btn-xs btn-edit" onclick="openEdit('+e.id+')">Edit</button>':'';
+    const dl=isA?'<button class="btn-xs btn-del" onclick="doDelete('+e.id+')">Del</button>':'';
+    return '<tr><td class="td-mono">'+(e.date_in||'—')+'</td><td class="td-mono">'+(e.time_in||'—').slice(0,5)+'</td><td class="td-name" title="'+(e.driver_name||'')+'">'+(e.driver_name||'—')+'</td><td title="'+(e.company||'')+'">'+(e.company||'—')+'</td><td class="td-plate">'+(e.plate||'—')+'</td><td><span class="badge '+(PC[e.purpose]||'b-def')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center;font-weight:600">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+st+'</td><td class="td-acts">'+co+' '+ed+' '+dl+'</td></tr>';
+  }).join('');
+
+  // Mobile cards
+  $('log-cards').innerHTML=_rows.map(e=>{
+    const st=e.check_out
+      ?'<span class="badge b-out"><span class="dot dot-g"></span>'+(e.time_out||'').slice(0,5)+'</span>'
+      :'<span class="badge b-in"><span class="dot dot-r"></span>Inside</span>';
+    const co=isA&&!e.check_out?'<button class="btn-co" onclick="doCheckout('+e.id+')">Check out</button>':'';
+    const ed=isA?'<button class="btn-xs btn-edit" onclick="openEdit('+e.id+')">Edit</button>':'';
+    const dl=isA?'<button class="btn-xs btn-del" onclick="doDelete('+e.id+')">Del</button>':'';
+    return '<div class="entry-card"><div class="ec-head"><div><div class="ec-name">'+(e.driver_name||'—')+'</div><div class="ec-plate">'+(e.plate||'—')+(e.plate_source?' · '+e.plate_source:'')+'</div></div>'+st+'</div><div class="ec-row"><span>📅 '+(e.date_in||'—')+'</span><span>🕐 '+(e.time_in||'—').slice(0,5)+'</span><span>🏢 '+(e.company||'—')+'</span><span>🚪 Dock '+(e.dock||'—')+'</span><span>👮 '+(e.officer||'—')+'</span></div><span class="badge '+(PC[e.purpose]||'b-def')+'" style="margin-bottom:8px">'+(e.purpose||'—')+'</span>'+(e.remarks?'<div class="text-sm text-muted" style="margin:6px 0">📝 '+e.remarks+'</div>':'')+'<div class="ec-acts">'+co+' '+ed+' '+dl+'</div></div>';
+  }).join('');
+
   const tp=Math.max(1,Math.ceil(_total/PAGE));
   $('pg-info').textContent='Page '+_page+' of '+tp;
   $('pg-prev').disabled=_page<=1;$('pg-next').disabled=_page>=tp;
 }
 
-// ── add entry ─────────────────────────────────────────────────────────────────
-function toggleForm(){const w=$('add-form-wrap');w.style.display=w.style.display==='none'?'block':'none';}
+// ── add entry ──────────────────────────────────────────────────
+function toggleForm(forceOpen=false){
+  const w=$('add-form-wrap');
+  w.style.display=(forceOpen||w.style.display==='none')?'block':'none';
+}
 async function submitEntry(){
   const driver=$('f-driver').value.trim(),plate=$('f-plate').value.trim();
   if(!driver||!plate){toast('Driver name and plate are required',1);return;}
@@ -731,36 +994,43 @@ async function submitEntry(){
     remarks:$('f-remarks').value||null,created_by:_user.id
   }]);
   if(error){toast('Error: '+error.message,1);return;}
-  toast('Entry checked in!');toggleForm();
+  toast('✓ Entry checked in!');
+  // reset form
   ['f-driver','f-plate','f-eid','f-contact','f-co','f-remarks'].forEach(id=>$(id).value='');
   ['f-psrc','f-vtype','f-purpose','f-dock','f-officer'].forEach(id=>$(id).selectedIndex=0);
-  _page=1;loadLog();
+  // security: keep form open; admin: close form and refresh
+  if(!isSecurity()){toggleForm();_page=1;loadLog();}
+  else{$('f-driver').focus();}
 }
 
-// ── checkout ──────────────────────────────────────────────────────────────────
+// ── checkout (admin only) ──────────────────────────────────────
 async function doCheckout(id){
+  if(!isAdmin()){toast('Admin access required',1);return;}
   const now=new Date();
-  const{error}=await _sb.from('gate_entries').update({check_out:true,exit_date:now.toISOString().split('T')[0],time_out:now.toTimeString().slice(0,8),updated_by:_user.id}).eq('id',id);
+  const{error}=await _sb.from('gate_entries').update({
+    check_out:true,exit_date:now.toISOString().split('T')[0],
+    time_out:now.toTimeString().slice(0,8),updated_by:_user.id
+  }).eq('id',id);
   if(error){toast('Error: '+error.message,1);return;}
   toast('Vehicle checked out!');loadLog();
-  const ins=await _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('check_in',true).eq('check_out',false);
-  $('st-inside').textContent=ins.count||0;
-  const nb=$('badge-inside');if(ins.count>0){nb.textContent=ins.count;nb.style.display='inline';}else{nb.style.display='none';}
 }
 
-// ── edit / delete ─────────────────────────────────────────────────────────────
+// ── edit / delete (admin only) ─────────────────────────────────
 function openEdit(id){
+  if(!isAdmin()){toast('Admin access required',1);return;}
   const e=_rows.find(r=>r.id===id);if(!e)return;
   $('edit-id').value=id;
   const sv=(fid,v)=>{$(fid).value=v||'';};
-  sv('e-driver',e.driver_name);sv('e-plate',e.plate);sv('e-psrc',e.plate_source);sv('e-vtype',e.vehicle_type);
-  sv('e-eid',e.emirates_id);sv('e-contact',e.contact);sv('e-co',e.company);sv('e-purpose',e.purpose);
-  sv('e-dock',e.dock);sv('e-officer',e.officer);sv('e-datein',e.date_in);
-  sv('e-timein',(e.time_in||'').slice(0,5));sv('e-exitdate',e.exit_date);sv('e-timeout',(e.time_out||'').slice(0,5));
-  sv('e-remarks',e.remarks);
+  sv('e-driver',e.driver_name);sv('e-plate',e.plate);sv('e-psrc',e.plate_source);
+  sv('e-vtype',e.vehicle_type);sv('e-eid',e.emirates_id);sv('e-contact',e.contact);
+  sv('e-co',e.company);sv('e-purpose',e.purpose);sv('e-dock',e.dock);
+  sv('e-officer',e.officer);sv('e-datein',e.date_in);
+  sv('e-timein',(e.time_in||'').slice(0,5));sv('e-exitdate',e.exit_date);
+  sv('e-timeout',(e.time_out||'').slice(0,5));sv('e-remarks',e.remarks);
   openModal('edit-overlay');
 }
 async function saveEdit(){
+  if(!isAdmin()){toast('Admin access required',1);return;}
   const id=$('edit-id').value,ed=$('e-exitdate').value,to=$('e-timeout').value;
   const{error}=await _sb.from('gate_entries').update({
     driver_name:$('e-driver').value,plate:$('e-plate').value,
@@ -776,33 +1046,56 @@ async function saveEdit(){
   toast('Entry updated!');closeModal('edit-overlay');loadLog();
 }
 async function doDelete(id){
-  if(!confirm('Delete this entry permanently?'))return;
+  if(!isAdmin()){toast('Admin access required',1);return;}
+  if(!confirm('Delete this entry permanently? This cannot be undone.'))return;
   const{error}=await _sb.from('gate_entries').delete().eq('id',id);
   if(error){toast('Error: '+error.message,1);return;}
   toast('Entry deleted.');loadLog();
 }
 
-// ── vehicle history ───────────────────────────────────────────────────────────
+// ── vehicle history ────────────────────────────────────────────
 async function searchHist(){
   const q=$('hist-q').value.trim();if(!q)return;
   const{data}=await _sb.from('gate_entries').select('*').ilike('plate','%'+q+'%').order('date_in',{ascending:false});
-  const res=$('hist-result'),wrap=$('hist-tbl-wrap'),empty=$('hist-empty');
-  if(!data||data.length===0){res.classList.add('hidden');wrap.classList.add('hidden');empty.classList.remove('hidden');return;}
+  const res=$('hist-result'),wrap=$('hist-tbl-wrap'),empty=$('hist-empty'),cards=$('hist-cards');
+  if(!data||data.length===0){
+    res.classList.add('hidden');wrap.classList.add('hidden');cards.innerHTML='';
+    empty.classList.remove('hidden');return;
+  }
   empty.classList.add('hidden');wrap.classList.remove('hidden');
   const cos=[...new Set(data.map(e=>e.company).filter(Boolean))].join(', ');
   res.classList.remove('hidden');
   res.innerHTML='<h4>Plate: '+data[0].plate+' &nbsp;·&nbsp; '+data.length+' visit'+(data.length!==1?'s':'')+' total</h4><div class="text-sm text-muted mt-1" style="margin-top:4px">Last visit: '+data[0].date_in+' &nbsp;·&nbsp; Companies: '+(cos||'—')+'</div>';
-  const now=new Date();
+
   $('hist-body').innerHTML=data.map(e=>{
     let dur='—';
-    if(e.time_in&&e.time_out&&e.date_in){const ms=new Date((e.exit_date||e.date_in)+'T'+e.time_out)-new Date(e.date_in+'T'+e.time_in);if(ms>0){const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);dur=h+'h '+m+'m';}}
+    if(e.time_in&&e.time_out&&e.date_in){
+      const ms=new Date((e.exit_date||e.date_in)+'T'+e.time_out)-new Date(e.date_in+'T'+e.time_in);
+      if(ms>0){const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);dur=h+'h '+m+'m';}
+    }
     const st=e.check_out?'<span class="badge b-out">Exited</span>':'<span class="badge b-in">Inside</span>';
     return '<tr><td class="td-mono">'+(e.date_in||'—')+'</td><td class="td-mono">'+(e.time_in||'—').slice(0,5)+'</td><td class="td-mono">'+(e.exit_date||'—')+'</td><td class="td-mono">'+(e.time_out||'—').slice(0,5)+'</td><td style="font-size:12px;font-weight:500">'+dur+'</td><td><span class="badge '+(PC[e.purpose]||'b-def')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+st+'</td></tr>';
   }).join('');
+
+  // Mobile history cards
+  cards.innerHTML=data.map(e=>{
+    let dur='—';
+    if(e.time_in&&e.time_out&&e.date_in){const ms=new Date((e.exit_date||e.date_in)+'T'+e.time_out)-new Date(e.date_in+'T'+e.time_in);if(ms>0){const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);dur=h+'h '+m+'m';}}
+    const st=e.check_out?'<span class="badge b-out">Exited</span>':'<span class="badge b-in">Inside</span>';
+    return '<div class="entry-card"><div class="ec-head"><div><div class="ec-name">'+(e.date_in||'—')+'</div><div class="ec-plate">In: '+(e.time_in||'—').slice(0,5)+' · Out: '+(e.time_out||'—').slice(0,5)+'</div></div>'+st+'</div><div class="ec-row"><span>⏱ '+dur+'</span><span>🚪 Dock '+(e.dock||'—')+'</span><span>👮 '+(e.officer||'—')+'</span></div><span class="badge '+(PC[e.purpose]||'b-def')+'">'+(e.purpose||'—')+'</span></div>';
+  }).join('');
+}
+function clearHist(){
+  $('hist-q').value='';
+  $('hist-result').classList.add('hidden');
+  $('hist-tbl-wrap').classList.add('hidden');
+  $('hist-cards').innerHTML='';
+  $('hist-empty').classList.add('hidden');
 }
 
-// ── reports ───────────────────────────────────────────────────────────────────
+// ── reports ────────────────────────────────────────────────────
 async function loadReports(){
+  if(!isAdmin())return;
   const now=new Date();
   const yrS=new Date(now.getFullYear(),0,1).toISOString().split('T')[0];
   const moS=new Date(now.getFullYear(),now.getMonth(),1).toISOString().split('T')[0];
@@ -813,26 +1106,43 @@ async function loadReports(){
     _sb.from('gate_entries').select('purpose,time_in,time_out,date_in,exit_date,officer').gte('date_in',yrS),
   ]);
   $('rp-week').textContent=wk.count||0;$('rp-month').textContent=mo.count||0;
-  const durs=(all.data||[]).filter(e=>e.time_in&&e.time_out&&e.date_in).map(e=>{const ms=new Date((e.exit_date||e.date_in)+'T'+e.time_out)-new Date(e.date_in+'T'+e.time_in);return ms/3600000;}).filter(h=>h>0&&h<24);
+  const durs=(all.data||[]).filter(e=>e.time_in&&e.time_out&&e.date_in)
+    .map(e=>{const ms=new Date((e.exit_date||e.date_in)+'T'+e.time_out)-new Date(e.date_in+'T'+e.time_in);return ms/3600000;})
+    .filter(h=>h>0&&h<24);
   $('rp-avg').textContent=durs.length?(durs.reduce((a,b)=>a+b,0)/durs.length).toFixed(1):'—';
+
   const months={};(all.data||[]).forEach(e=>{if(e.date_in){const m=e.date_in.slice(0,7);months[m]=(months[m]||0)+1;}});
   const mk=Object.keys(months).sort().slice(-12);
   mkC('rp-monthly','bar',mk.map(m=>new Date(m+'-01').toLocaleDateString('en-AE',{month:'short',year:'2-digit'})),[{label:'Entries',data:mk.map(k=>months[k]),backgroundColor:'#00E784',borderRadius:4}]);
+
   const pur={};(all.data||[]).forEach(e=>{if(e.purpose)pur[e.purpose]=(pur[e.purpose]||0)+1;});
-  mkC('rp-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12'],borderWidth:1.5}]);
+  mkC('rp-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3','#f3e8ff'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12','#6b21a8'],borderWidth:1.5}]);
+
   const moD=(all.data||[]).filter(e=>e.date_in&&e.date_in>=moS);
   const ofs={};moD.forEach(e=>{if(e.officer)ofs[e.officer]=(ofs[e.officer]||0)+1;});
   const sofs=Object.entries(ofs).sort((a,b)=>b[1]-a[1]);const mxO=sofs[0]?.[1]||1;
   $('rp-officers').innerHTML=sofs.map(([o,cnt])=>'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="width:90px;font-weight:600">'+o+'</div><div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="height:100%;width:'+Math.round(cnt/mxO*100)+'%;background:var(--green);border-radius:4px"></div></div><div style="font-weight:700;color:var(--forest);width:30px;text-align:right">'+cnt+'</div></div>').join('')||'<p class="text-muted text-sm">No data for this month.</p>';
 }
 
-// ── users ─────────────────────────────────────────────────────────────────────
+async function exportAll(){
+  const{data}=await _sb.from('gate_entries').select('*').order('date_in',{ascending:false}).order('id',{ascending:false});
+  dlCSV(data||[]);
+  toast('All records exported!');
+}
+
+// ── users (admin only) ─────────────────────────────────────────
 async function loadUsers(){
+  if(!isAdmin())return;
   const{data}=await _sb.from('profiles').select('*').order('created_at');
+  const RBADGE={admin:'b-admin',security:'b-security',viewer:'b-viewer'};
   $('user-list').innerHTML=(data||[]).map(u=>{
     const ini=u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const tog=u.id!==_user.id?'<button class="btn btn-outline btn-sm" onclick="toggleRole(\''+u.id+'\',\''+u.role+'\')">'+(u.role==='admin'?'→ Security':'→ Admin')+'</button>':'';
-    return '<div class="user-card"><div class="user-av">'+ini+'</div><div class="user-info"><div class="user-name">'+u.name+'</div><div class="user-meta">'+u.role+'</div></div><div style="display:flex;gap:6px;align-items:center"><span class="badge '+(u.role==='admin'?'b-admin':'b-sec')+'">'+u.role+'</span>'+tog+'</div></div>';
+    // admin can change roles but NOT their own
+    const canChange=u.id!==_user.id;
+    const roleSelect=canChange
+      ?'<select class="tb btn-sm" style="min-height:auto;padding:4px 8px;width:auto" onchange="changeRole(''+u.id+'',this.value)"><option value="security"'+(u.role==='security'?' selected':'')+'>Security</option><option value="viewer"'+(u.role==='viewer'?' selected':'')+'>Viewer</option><option value="admin"'+(u.role==='admin'?' selected':'')+'>Admin</option></select>'
+      :'<span class="badge '+RBADGE[u.role||'security']+'" style="pointer-events:none">'+u.role+' (you)</span>';
+    return '<div class="user-card"><div class="user-av">'+ini+'</div><div class="user-info"><div class="user-name">'+u.name+'</div><div class="user-meta">'+u.role.charAt(0).toUpperCase()+u.role.slice(1)+'</div></div><div class="user-acts">'+roleSelect+'</div></div>';
   }).join('')||'<p class="text-muted">No users found.</p>';
 }
 function openUserModal(){$('u-err').textContent='';openModal('user-overlay');}
@@ -840,21 +1150,23 @@ async function createUser(){
   const name=$('u-name').value.trim(),email=$('u-email').value.trim(),pass=$('u-pass').value,role=$('u-role').value;
   $('u-err').textContent='';
   if(!name||!email||!pass){$('u-err').textContent='All fields are required.';return;}
+  if(pass.length<8){$('u-err').textContent='Password must be at least 8 characters.';return;}
   const{error}=await _sb.auth.signUp({email,password:pass,options:{data:{name,role}}});
   if(error){$('u-err').textContent=error.message;return;}
-  toast('User created! They can now sign in.');closeModal('user-overlay');
+  toast('✓ User created! They can now sign in.');closeModal('user-overlay');
   ['u-name','u-email','u-pass'].forEach(id=>$(id).value='');
   await loadUsers();
 }
-async function toggleRole(id,cur){
-  const nr=cur==='admin'?'security':'admin';
-  if(!confirm('Change this user to '+nr+'?'))return;
-  await _sb.from('profiles').update({role:nr}).eq('id',id);
-  toast('Role updated.');loadUsers();
+async function changeRole(id,newRole){
+  if(!isAdmin()){toast('Admin access required',1);return;}
+  const{error}=await _sb.from('profiles').update({role:newRole}).eq('id',id);
+  if(error){toast('Error: '+error.message,1);loadUsers();return;}
+  toast('Role updated to '+newRole+'.');loadUsers();
 }
 
-// ── import ────────────────────────────────────────────────────────────────────
+// ── import ─────────────────────────────────────────────────────
 async function doSeed(){
+  if(!isAdmin())return;
   const btn=$('seed-btn');btn.disabled=true;
   $('seed-prog').classList.remove('hidden');$('seed-done').classList.add('hidden');
   const bs=100;
@@ -862,43 +1174,63 @@ async function doSeed(){
     await _sb.from('gate_entries').insert(SEED_DATA.slice(i,i+bs));
     const pct=Math.min(Math.round(((i+bs)/SEED_DATA.length)*100),100);
     $('seed-fill').style.width=pct+'%';
-    $('seed-lbl').textContent='Importing... '+(Math.min(i+bs,SEED_DATA.length))+' / '+SEED_DATA.length;
+    $('seed-lbl').textContent='Importing '+(Math.min(i+bs,SEED_DATA.length))+' / '+SEED_DATA.length+'...';
     await new Promise(r=>setTimeout(r,60));
   }
   $('seed-done').classList.remove('hidden');$('seed-lbl').textContent='Complete!';
-  toast('990 records imported!');
+  toast('✓ 990 records imported!');
 }
 function handleDrop(e){e.preventDefault();$('drop-z').classList.remove('drag-over');if(e.dataTransfer.files[0])handleCSV(e.dataTransfer.files[0]);}
 async function handleCSV(file){
   if(!file)return;
-  const text=await file.text();const lines=text.trim().split('\n');
+  const text=await file.text();const lines=text.trim().split('
+');
   const hdrs=lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/[^a-z_]/g,''));
-  const rows=lines.slice(1).map(line=>{const vals=line.split(',');const o={};hdrs.forEach((h,i)=>{o[h]=vals[i]?.replace(/"/g,'').trim()||null;});return o;}).filter(r=>r.driver_name||r.plate);
-  const st=$('csv-status');st.classList.remove('hidden');st.textContent='Uploading '+rows.length+' rows...';
+  const rows=lines.slice(1).map(line=>{
+    const vals=line.split(',');const o={};
+    hdrs.forEach((h,i)=>{o[h]=vals[i]?.replace(/"/g,'').trim()||null;});
+    return o;
+  }).filter(r=>r.driver_name||r.plate);
+  const st=$('csv-status');st.classList.remove('hidden');st.style.color='var(--text)';
+  st.textContent='Uploading '+rows.length+' rows...';
   for(let i=0;i<rows.length;i+=100)await _sb.from('gate_entries').insert(rows.slice(i,i+100));
-  st.textContent='✓ Imported '+rows.length+' records.';st.style.color='var(--forest)';toast('CSV imported!');
+  st.textContent='✓ Imported '+rows.length+' records successfully.';st.style.color='var(--forest)';
+  toast('✓ CSV imported!');
 }
 
-// ── export ────────────────────────────────────────────────────────────────────
+// ── export ─────────────────────────────────────────────────────
 async function exportCSV(){
-  let q=_sb.from('gate_entries').select('*').order('date_in',{ascending:false});
-  const date=$('log-date').value,purp=$('log-purpose').value,off=$('log-officer').value,stat=$('log-status').value;
-  if(date)q=q.eq('date_in',date);if(purp)q=q.eq('purpose',purp);if(off)q=q.eq('officer',off);
-  if(stat==='inside')q=q.eq('check_out',false);if(stat==='out')q=q.eq('check_out',true);
-  const{data}=await q;
+  let qry=_sb.from('gate_entries').select('*').order('date_in',{ascending:false}).order('id',{ascending:false});
+  const date=$('log-date').value,purp=$('log-purpose').value,
+        plsrc=$('log-platesrc').value,off=$('log-officer').value,stat=$('log-status').value;
+  const q=($('log-q').value||'').trim();
+  if(date)qry=qry.eq('date_in',date);if(purp)qry=qry.eq('purpose',purp);
+  if(plsrc)qry=qry.eq('plate_source',plsrc);if(off)qry=qry.eq('officer',off);
+  if(stat==='inside')qry=qry.eq('check_out',false);if(stat==='out')qry=qry.eq('check_out',true);
+  if(q)qry=qry.or('driver_name.ilike.%'+q+'%,plate.ilike.%'+q+'%,company.ilike.%'+q+'%,emirates_id.ilike.%'+q+'%');
+  const{data}=await qry;
+  dlCSV(data||[]);
+  toast('✓ CSV exported! ('+(data||[]).length+' rows)');
+}
+function dlCSV(data){
   const hdrs=['date_in','time_in','driver_name','company','plate','plate_source','vehicle_type','emirates_id','contact','purpose','dock','officer','check_out','exit_date','time_out','remarks'];
-  const csv=[hdrs.join(','),...(data||[]).map(e=>hdrs.map(h=>e[h]==null?'':String(e[h]).replace(/,/g,';')).join(','))].join('\n');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='gate_log_'+new Date().toISOString().split('T')[0]+'.csv';a.click();toast('CSV exported!');
+  const csv=[hdrs.join(','),...data.map(e=>hdrs.map(h=>e[h]==null?'':String(e[h]).replace(/,/g,';')).join(','))].join('
+');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='gate_log_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
 }
 
-// ── utils ─────────────────────────────────────────────────────────────────────
+// ── utils ──────────────────────────────────────────────────────
 function openModal(id){$(id).classList.add('open');}
 function closeModal(id){$(id).classList.remove('open');}
 let _tt;
 function toast(msg,err){
-  const t=$('toast');t.textContent=msg;t.style.background=err?'var(--danger)':'var(--forest)';
-  t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3200);
+  const t=$('toast');t.textContent=msg;
+  t.style.background=err?'var(--danger)':'var(--forest)';
+  t.classList.add('show');clearTimeout(_tt);
+  _tt=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>
