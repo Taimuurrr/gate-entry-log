@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Careem Quik — Gate Entry</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --grn:#00E784;--fst:#00493E;--fst2:#005c49;--mnt:#D6FFEA;
+  --txt:#111827;--sub:#374151;--mut:#6b7280;
+  --brd:#e5e7eb;--bg:#f3f4f6;--crd:#fff;
+  --red:#dc2626;--orn:#d97706;--blu:#2563eb;
+  --sbw:228px;
+}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;color:var(--txt);background:var(--bg)}
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--fst);padding:16px;gap:12px}
+.login-box{background:#fff;border-radius:16px;padding:36px;width:400px;max-width:100%}
+.ll{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.cm{width:38px;height:38px;background:var(--grn);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:var(--fst);flex-shrink:0}
+.bt{font-size:18px;font-weight:700;color:var(--fst)}.bt span{color:var(--grn)}
+.login-box h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.lsb{font-size:13px;color:var(--mut);margin-bottom:24px}
+.lbl{font-size:11px;font-weight:600;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.inp{width:100%;padding:10px 12px;border:1.5px solid var(--brd);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border .15s,box-shadow .15s}
+.inp:focus{border-color:var(--grn);box-shadow:0 0 0 3px rgba(0,231,132,.15)}
+.fg2{margin-bottom:16px}
+.btn-lg{width:100%;padding:11px;background:var(--fst);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.btn-lg:hover:not(:disabled){background:var(--fst2)}
+.btn-lg:disabled{opacity:.65;cursor:not-allowed}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+#lerr{font-size:13px;margin-top:12px;min-height:20px;line-height:1.5;border-radius:8px;padding:0}
+#lerr.err{color:var(--red)}
+#lerr.info{color:var(--fst);background:var(--mnt);padding:10px 12px;border:1px solid var(--grn)}
+.diag-box{background:rgba(255,255,255,.08);border-radius:10px;padding:14px 18px;width:400px;max-width:100%;font-size:12px;color:rgba(255,255,255,.7);line-height:1.8}
+.diag-box strong{color:rgba(255,255,255,.9);font-weight:600}
+.diag-row{display:flex;justify-content:space-between;gap:8px}
+.diag-ok{color:#4ade80;font-weight:600}
+.diag-no{color:#f87171;font-weight:600}
+/* APP */
+#app{display:none;height:100vh;overflow:hidden}
+.layout{display:flex;height:100%;position:relative}
+/* SIDEBAR */
+.sb{width:var(--sbw);background:var(--fst);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:transform .25s;z-index:200}
+.sb-br{padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:9px}
+.sb-br .bt2{font-size:14px;font-weight:700;color:#fff}.sb-br .bt2 span{color:var(--grn)}
+.sb-cl{display:none;margin-left:auto;background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer;line-height:1;padding:2px}
+.sb-us{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-us .un{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-us .ur{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.nvs{padding:6px 0}
+.nvl{padding:6px 16px 2px;font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+.nvi{display:flex;align-items:center;gap:9px;padding:10px 16px;color:rgba(255,255,255,.65);font-size:13px;font-weight:500;cursor:pointer;transition:.12s;border-left:3px solid transparent;user-select:none}
+.nvi:hover{background:rgba(255,255,255,.07);color:#fff}
+.nvi.active{background:rgba(0,231,132,.12);color:var(--grn);border-left-color:var(--grn)}
+.nvi svg{width:15px;height:15px;flex-shrink:0}
+.nbdg{margin-left:auto;background:var(--red);color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;display:none}
+.sb-ft{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px}
+.btn-out{width:100%;padding:8px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.15);border-radius:7px;font-size:13px;font-weight:500;cursor:pointer}
+.btn-out:hover{background:rgba(255,255,255,.15);color:#fff}
+.sbv{font-size:10px;color:rgba(255,255,255,.2);text-align:center}
+/* MAIN */
+.mn{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.tb{background:#fff;border-bottom:1px solid var(--brd);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.bgr{display:none;background:none;border:none;cursor:pointer;padding:4px;color:var(--sub)}
+.bgr svg{width:20px;height:20px}
+.tb-t{font-size:15px;font-weight:600}
+.lvc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--mut);background:var(--bg);border:1px solid var(--brd);border-radius:20px;padding:3px 10px}
+.lvd{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pu 1.5s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.35}}
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199}
+/* CONTENT */
+.ct{flex:1;overflow-y:auto;padding:20px}
+/* BUTTONS */
+.btn{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s;white-space:nowrap}
+.btn:hover:not(:disabled){opacity:.85}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-p{background:var(--fst);color:#fff}
+.btn-g{background:var(--grn);color:var(--fst);font-weight:600}
+.btn-o{background:#fff;color:var(--sub);border:1px solid var(--brd)}
+.btn-w{background:#fff3cd;color:var(--orn);border:1px solid #fcd34d}
+.btn-sm{font-size:12px;padding:5px 10px;border-radius:6px}
+.btn-xs{font-size:11px;padding:3px 8px;border-radius:6px;border:none;cursor:pointer}
+.be{background:#eff6ff;color:var(--blu)} .bd{background:#fee2e2;color:var(--red)}
+.bco{background:var(--mnt);color:var(--fst);font-size:12px;padding:5px 10px;border-radius:6px;font-weight:600;border:none;cursor:pointer}
+.bco:hover{background:var(--grn)}
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{background:#fff;border:1px solid var(--brd);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sa::after{background:#9ca3af}.st::after{background:var(--blu)}.si::after{background:var(--red)}.so::after{background:var(--fst)}
+.sl{font-size:11px;font-weight:600;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.sv{font-size:26px;font-weight:700;line-height:1}
+.sa .sv{color:var(--sub)}.st .sv{color:var(--blu)}.si .sv{color:var(--red)}.so .sv{color:var(--fst)}
+.ss{font-size:11px;color:var(--mut);margin-top:4px}
+/* CARD / CHART */
+.crd{background:#fff;border:1px solid var(--brd);border-radius:12px;padding:16px 18px}
+.crt{font-size:13px;font-weight:600;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.ch2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.ch3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
+.chb{background:#fff;border:1px solid var(--brd);border-radius:12px;padding:16px 18px}
+.chb canvas{max-height:190px}
+/* OVERSTAY */
+.ovb{background:#fffbeb;border:1px solid #fcd34d;border-left:4px solid var(--orn);border-radius:10px;padding:12px 16px;margin-bottom:20px;display:none}
+.ovi{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #fef3c7;flex-wrap:wrap}
+.ovi:last-child{border-bottom:none}
+.ovd{width:8px;height:8px;background:var(--orn);border-radius:50%;flex-shrink:0}
+.ovi-i{flex:1;min-width:130px}
+.ovi-p{font-weight:600;font-size:13px}
+.ovi-m{font-size:12px;color:var(--mut)}
+.ovi-t{font-size:12px;font-weight:700;color:var(--orn);background:#fff3cd;padding:2px 8px;border-radius:20px;white-space:nowrap}
+/* DOCK */
+.dg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.dc{border-radius:10px;padding:12px;border:2px solid transparent}
+.dc.free{background:#f0fdf4;border-color:#bbf7d0}
+.dc.busy{background:#fff1f2;border-color:#fecdd3}
+.dc.ambient{background:#f0fdf4;border-color:#bbf7d0}
+.dc.ramp{background:#f5f3ff;border-color:#ddd6fe}
+.dc.chiller{background:#eff6ff;border-color:#bfdbfe}
+.dn{font-size:11px;font-weight:700;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.ds{font-size:13px;font-weight:600}
+.dp{font-size:12px;font-family:monospace;color:var(--blu);margin-top:2px}
+.dz{font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;display:inline-block;margin-top:4px}
+.dz-a{background:#dcfce7;color:#166534}.dz-r{background:#f3e8ff;color:#6b21a8}.dz-c{background:#dbeafe;color:#1e40af}
+/* QUEUE */
+.qi{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid var(--brd);border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
+.qn{width:24px;height:24px;border-radius:50%;background:var(--fst);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.qi-i{flex:1;min-width:120px}
+.qi-n{font-weight:600;font-size:13px}
+.qi-m{font-size:12px;color:var(--mut)}
+.qi-t{font-size:12px;font-weight:700;color:var(--orn);white-space:nowrap}
+.qi-a{display:flex;gap:6px;flex-wrap:wrap}
+/* OUTLIER */
+.oli{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--brd);flex-wrap:wrap}
+.oli:last-child{border-bottom:none}
+.olr{width:22px;font-size:12px;font-weight:700;color:var(--mut);flex-shrink:0;text-align:center}
+.oli-i{flex:1;min-width:120px}
+.oli-p{font-family:monospace;font-size:12px;font-weight:700;color:var(--blu)}
+.oli-n{font-size:13px;font-weight:500}
+.oli-m{font-size:12px;color:var(--mut)}
+.old{font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px;white-space:nowrap}
+.dok{background:var(--mnt);color:var(--fst)}.dwn{background:#fff3cd;color:var(--orn)}.dng{background:#fee2e2;color:var(--red)}
+/* TOOLBAR */
+.tlb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.ti{padding:7px 10px;background:#fff;color:var(--txt);border:1px solid var(--brd);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;min-height:36px}
+.ti:focus{border-color:var(--grn);box-shadow:0 0 0 3px rgba(0,231,132,.12)}
+.tis{flex:1;min-width:160px}
+.cpill{font-size:12px;font-weight:500;color:var(--mut);background:var(--bg);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;white-space:nowrap}
+.ta{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+/* TABLE */
+.tw{background:#fff;border:1px solid var(--brd);border-radius:12px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th{padding:9px 11px;text-align:left;font-size:11px;font-weight:600;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid var(--brd);white-space:nowrap}
+td{padding:9px 11px;border-bottom:1px solid #f3f4f6;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f9fffc}
+.tm{font-family:monospace;font-size:12px;color:var(--mut)}
+.tn{font-weight:500}
+.tp{font-family:monospace;font-size:12px;color:var(--blu);font-weight:600}
+.tac{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+/* MOBILE CARDS */
+.ec{background:#fff;border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px;display:none}
+.ech{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ecn{font-weight:600;font-size:14px}
+.ecp{font-family:monospace;font-size:12px;color:var(--blu);font-weight:600}
+.ecr{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:12px;color:var(--mut);margin-bottom:8px}
+.eca{display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--brd)}
+/* PAGER */
+.pgr{display:flex;justify-content:center;align-items:center;gap:8px;padding:12px 0 2px;font-size:13px;color:var(--mut);flex-wrap:wrap}
+.pgr button{padding:6px 14px;background:#fff;border:1px solid var(--brd);border-radius:7px;cursor:pointer;font-size:13px;color:var(--txt);min-height:36px}
+.pgr button:hover:not(:disabled){background:var(--mnt);border-color:var(--grn);color:var(--fst)}
+.pgr button:disabled{opacity:.35;cursor:default}
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.bi{background:#fee2e2;color:#991b1b}.bo{background:var(--mnt);color:var(--fst)}.bw{background:#fff3cd;color:#92400e}
+.bb{background:#dbeafe;color:#1e40af}.bv{background:#ede9fe;color:#5b21b6}
+.br{background:#ffedd5;color:#9a3412}.bvi{background:#d1fae5;color:#065f46}
+.bm{background:#fef9c3;color:#713f12}.bpk{background:#f3e8ff;color:#6b21a8}
+.bdf{background:#f3f4f6;color:var(--mut)}
+.bad{background:rgba(0,73,62,.12);color:var(--fst);font-weight:700}
+.bsc{background:rgba(37,99,235,.1);color:var(--blu)}
+.bvw{background:rgba(107,114,128,.1);color:var(--mut)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:2px;flex-shrink:0}
+.dr{background:var(--red)}.dg2{background:var(--fst)}.dw{background:var(--orn)}
+/* FORM */
+.fp{background:#fff;border:1px solid var(--brd);border-radius:12px;padding:20px;margin-bottom:20px;border-top:3px solid var(--grn)}
+.fp h3{font-size:14px;font-weight:600;margin-bottom:3px}
+.fps{font-size:12px;color:var(--mut);margin-bottom:16px}
+.fg3{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ff{display:flex;flex-direction:column;gap:4px}
+.ff.ful{grid-column:1/-1}
+.ff label{font-size:11px;font-weight:600;color:var(--mut);letter-spacing:.05em;text-transform:uppercase}
+.ff input,.ff select{padding:8px 10px;background:var(--bg);color:var(--txt);border:1px solid var(--brd);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;min-height:36px}
+.ff input:focus,.ff select:focus{border-color:var(--grn);box-shadow:0 0 0 3px rgba(0,231,132,.12)}
+.ff input:disabled,.ff select:disabled{opacity:.5}
+.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--brd);flex-wrap:wrap}
+.dal{padding:10px 14px;border-radius:8px;font-size:13px;margin-top:8px;display:none;font-weight:500}
+.dal.ok{background:var(--mnt);border:1px solid var(--grn);color:var(--fst)}
+.dal.wn{background:#fffbeb;border:1px solid #fcd34d;color:#92400e}
+/* MODAL */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:16px;overflow-y:auto}
+.ovl.open{display:flex}
+.mdl{background:#fff;border-radius:14px;width:100%;max-width:640px;margin:auto}
+.mh{padding:16px 20px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;border-radius:14px 14px 0 0;z-index:1}
+.mh h3{font-size:15px;font-weight:600}
+.mx{background:none;border:none;font-size:22px;color:var(--mut);cursor:pointer;line-height:1;padding:2px 6px}
+.mb{padding:20px}
+.mf{padding:12px 20px;border-top:1px solid var(--brd);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;background:#fff;border-radius:0 0 14px 14px}
+/* USERS */
+.ul{display:flex;flex-direction:column;gap:10px}
+.uc{background:#fff;border:1px solid var(--brd);border-radius:10px;padding:13px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.uav{width:40px;height:40px;border-radius:50%;background:var(--mnt);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:var(--fst);flex-shrink:0}
+.ui{flex:1;min-width:120px}
+.un2{font-weight:600;font-size:14px}
+.um{font-size:12px;color:var(--mut);margin-top:1px}
+/* IMPORT */
+.dz2{border:2px dashed var(--brd);border-radius:12px;padding:36px 20px;text-align:center;background:var(--bg);cursor:pointer;transition:.2s}
+.dz2:hover,.dz2.dov{border-color:var(--grn);background:var(--mnt)}
+.dz2 h3{font-size:15px;font-weight:600;margin-bottom:5px;color:var(--sub)}
+.dz2 p{font-size:12px;color:var(--mut)}
+.pb{height:6px;background:var(--brd);border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:var(--grn);border-radius:3px;transition:width .3s}
+/* UTILS */
+.hid{display:none!important}
+.emp{text-align:center;padding:36px 20px;color:var(--mut)}
+.emp-i{font-size:36px;margin-bottom:10px}
+.emp h4{font-size:14px;font-weight:600;color:var(--sub);margin-bottom:4px}
+.dvd{border:none;border-top:1px solid var(--brd);margin:20px 0}
+.tsm{font-size:12px}.tmt{color:var(--mut)}
+.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}
+.tst{position:fixed;bottom:20px;right:20px;background:var(--fst);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;max-width:320px}
+.tst.show{opacity:1;transform:none}
+/* RESPONSIVE TABLET */
+@media(max-width:900px){
+  .sg{grid-template-columns:1fr 1fr}
+  .ch2{grid-template-columns:1fr}
+  .ch3{grid-template-columns:1fr 1fr}
+  .dg{grid-template-columns:repeat(3,1fr)}
+}
+/* RESPONSIVE MOBILE */
+@media(max-width:640px){
+  :root{--sbw:270px}
+  .sb{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .sb-cl{display:block}
+  .sb-ov.active{display:block}
+  .bgr{display:flex}
+  .ct{padding:14px}
+  .tb{padding:0 14px}
+  .sg{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .sc{padding:12px 14px}.sv{font-size:22px}
+  .ch2,.ch3{grid-template-columns:1fr;gap:12px}
+  .dg{grid-template-columns:repeat(3,1fr);gap:8px}
+  .fg3{grid-template-columns:1fr}
+  .ff.ful{grid-column:1}
+  .fp{padding:14px}
+  .tw{display:none}
+  .ec{display:block}
+  .tlb{gap:6px}
+  .tis{min-width:100%;order:-1}
+  .cpill{margin-left:0}
+  .ta{margin-left:0;width:100%}
+  .ta .btn{flex:1;justify-content:center}
+  .ovl{padding:0;align-items:flex-end}
+  .mdl{border-radius:14px 14px 0 0;max-width:100%;max-height:92vh;overflow-y:auto}
+  .mh{border-radius:14px 14px 0 0}
+  .mf{position:sticky;bottom:0}
+  .tst{bottom:14px;right:14px;left:14px;max-width:none}
+  .login-box,.diag-box{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="ll"><div class="cm">Q</div><div class="bt">careem <span>quik</span></div></div>
+    <h2>Gate Entry System</h2>
+    <p class="lsb">Sign in to continue</p>
+    <div class="fg2">
+      <div class="lbl">Email address</div>
+      <input class="inp" id="li-email" type="email" placeholder="officer@careemquik.com"
+        autocomplete="email" onkeydown="if(event.key==='Enter'){document.getElementById('li-pass').focus()}" />
+    </div>
+    <div class="fg2">
+      <div class="lbl">Password</div>
+      <input class="inp" id="li-pass" type="password" placeholder="••••••••"
+        autocomplete="current-password" onkeydown="if(event.key==='Enter'){doLogin()}" />
+    </div>
+    <button class="btn-lg" id="btn-login" onclick="doLogin()">
+      <div class="spin" id="lspin"></div>
+      <span id="ltxt">Sign in</span>
+    </button>
+    <div id="lerr"></div>
+  </div>
+  <div class="diag-box" id="diag-box">
+    <div class="diag-row"><strong>Connection status</strong><span id="d-conn">checking...</span></div>
+    <div class="diag-row"><strong>Supabase library</strong><span id="d-lib">checking...</span></div>
+    <div class="diag-row"><strong>Credentials</strong><span id="d-creds">checking...</span></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="layout">
+<div class="sb-ov" id="sb-ov" onclick="closeSb()"></div>
+<div class="sb" id="sb">
+  <div class="sb-br">
+    <div class="cm" style="width:30px;height:30px;font-size:14px">Q</div>
+    <div class="bt2">careem <span>quik</span></div>
+    <button class="sb-cl" onclick="closeSb()">×</button>
+  </div>
+  <div class="sb-us"><div class="un" id="sb-name">—</div><div class="ur" id="sb-role">—</div></div>
+  <div class="nvs">
+    <div class="nvl">Main</div>
+    <div class="nvi active" id="nav-dashboard" onclick="go('dashboard')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 2a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2H2a2 2 0 01-2-2V2zm8 0a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2h-4a2 2 0 01-2-2V2zm-8 8a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2H2a2 2 0 01-2-2v-4zm8 0a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2h-4a2 2 0 01-2-2v-4z"/></svg>
+      Dashboard
+    </div>
+    <div class="nvi" id="nav-docks" onclick="go('docks')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 11a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1H2a1 1 0 01-1-1v-3zm5-4a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 01-1 1H7a1 1 0 01-1-1V7zm5-5a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V2z"/></svg>
+      Dock Manager
+      <span class="nbdg" id="badge-queue">0</span>
+    </div>
+    <div class="nvi" id="nav-log" onclick="go('log')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h11A1.5 1.5 0 0115 2.5v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 011 13.5v-11zm2 .5v10h10V3H3zm2 2h6v1H5V5zm0 3h6v1H5V8zm0 3h4v1H5v-1z"/></svg>
+      Gate Log
+      <span class="nbdg" id="badge-inside">0</span>
+    </div>
+    <div class="nvi" id="nav-history" onclick="go('history')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-3.5a.5.5 0 01.5.5v2.793l1.854 1.853a.5.5 0 01-.708.708l-2-2A.5.5 0 017 8V5a.5.5 0 01.5-.5z"/></svg>
+      Vehicle History
+    </div>
+  </div>
+  <div class="nvs" id="admin-nav" style="display:none">
+    <div class="nvl">Admin</div>
+    <div class="nvi" id="nav-reports" onclick="go('reports')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2z"/></svg>
+      Reports
+    </div>
+    <div class="nvi" id="nav-users" onclick="go('users')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 004 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+      Users
+    </div>
+    <div class="nvi" id="nav-import" onclick="go('import')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 01.5.5v2.5a1 1 0 001 1h12a1 1 0 001-1v-2.5a.5.5 0 011 0v2.5a2 2 0 01-2 2H2a2 2 0 01-2-2v-2.5a.5.5 0 01.5-.5z"/><path d="M7.646 11.854a.5.5 0 00.708 0l3-3a.5.5 0 00-.708-.708L8.5 10.293V1.5a.5.5 0 00-1 0v8.793L5.354 8.146a.5.5 0 10-.708.708l3 3z"/></svg>
+      Import Data
+    </div>
+  </div>
+  <div class="sb-ft">
+    <button class="btn-out" onclick="doSignOut()">Sign out</button>
+    <div class="sbv">Careem Quik Gate System v3</div>
+  </div>
+</div>
+<div class="mn">
+  <div class="tb">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="bgr" onclick="openSb()"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg></button>
+      <div class="tb-t" id="page-title">Dashboard</div>
+    </div>
+    <div class="lvc"><div class="lvd"></div><span>Live</span></div>
+  </div>
+  <div class="ct">
+
+  <!-- DASHBOARD -->
+  <div id="screen-dashboard" class="screen">
+    <div class="sg">
+      <div class="sc sa"><div class="sl">Total records</div><div class="sv" id="st-total">—</div><div class="ss">All time</div></div>
+      <div class="sc st"><div class="sl">Today's entries</div><div class="sv" id="st-today">—</div><div class="ss" id="st-tsub">—</div></div>
+      <div class="sc si"><div class="sl">Currently inside</div><div class="sv" id="st-inside">—</div><div class="ss" id="st-ovlbl">—</div></div>
+      <div class="sc so"><div class="sl">Exited today</div><div class="sv" id="st-out">—</div><div class="ss">checked out</div></div>
+    </div>
+    <div class="ovb" id="ov-banner">
+      <div style="font-size:13px;font-weight:700;color:var(--orn);margin-bottom:8px">⚠ Overstay alerts — vehicles inside more than 4 hours</div>
+      <div id="ov-list"></div>
+    </div>
+    <div class="ch2">
+      <div class="crd"><div class="crt">🕐 Longest stays — currently inside</div><div id="outliers"></div></div>
+      <div class="crd"><div class="crt">🚦 Dock occupancy — right now</div><div id="dash-docks"></div></div>
+    </div>
+    <div class="ch2">
+      <div class="chb"><div class="crt">Entries — last 14 days</div><canvas id="ch-trend"></canvas></div>
+      <div class="chb"><div class="crt">Purpose breakdown</div><canvas id="ch-purpose"></canvas></div>
+    </div>
+    <div class="ch3">
+      <div class="chb"><div class="crt">Vehicle type mix</div><canvas id="ch-vtype"></canvas></div>
+      <div class="chb"><div class="crt">Peak arrival hours</div><canvas id="ch-hours"></canvas></div>
+      <div class="chb"><div class="crt">Top companies <span class="tsm tmt" style="font-weight:400">30 days</span></div><div id="top-cos" style="font-size:13px;padding-top:4px"></div></div>
+    </div>
+    <div class="ch2">
+      <div class="crd"><div class="crt">Today by officer</div><div id="off-tbl"></div></div>
+      <div class="chb"><div class="crt">Dock utilization today</div><canvas id="ch-docks"></canvas></div>
+    </div>
+  </div>
+
+  <!-- DOCK MANAGER -->
+  <div id="screen-docks" class="screen hid">
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
+      <div style="font-size:13px;color:var(--mut)">Live dock status — updates automatically when vehicles enter or exit.</div>
+      <button class="btn btn-o btn-sm" style="margin-left:auto" onclick="loadDocks()">↻ Refresh</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;font-size:12px">
+      <span style="padding:3px 10px;border-radius:20px;background:#dcfce7;color:#166534;font-weight:600">Ambient (1–5)</span>
+      <span style="padding:3px 10px;border-radius:20px;background:#f3e8ff;color:#6b21a8;font-weight:600">Ramp · Van/Car only (6)</span>
+      <span style="padding:3px 10px;border-radius:20px;background:#dbeafe;color:#1e40af;font-weight:600">Chiller (7–9)</span>
+      <span style="padding:3px 10px;border-radius:20px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:600">🟢 Free</span>
+      <span style="padding:3px 10px;border-radius:20px;background:#fff1f2;border:1px solid #fecdd3;font-weight:600">🔴 Occupied</span>
+    </div>
+    <div class="dg" id="dock-grid"></div>
+    <div class="dvd"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:15px;font-weight:600">Waiting queue</div>
+        <div style="font-size:12px;color:var(--mut);margin-top:2px">First-come first-served. Assign available docks from here.</div>
+      </div>
+      <button class="btn btn-g btn-sm" onclick="openQueueModal()">+ Add to queue</button>
+    </div>
+    <div id="queue-list"></div>
+  </div>
+
+  <!-- GATE LOG -->
+  <div id="screen-log" class="screen hid">
+    <div id="add-form-wrap" style="display:none">
+      <div class="fp">
+        <h3>New gate entry — check in</h3>
+        <p class="fps">Select vehicle type and purpose first to see available docks. Time in is auto-stamped.</p>
+        <div class="fg3">
+          <div class="ff ful"><label>Driver name *</label><input id="f-driver" placeholder="Full name" autocomplete="off" /></div>
+          <div class="ff"><label>Vehicle plate *</label><input id="f-plate" placeholder="DXB 12345" autocomplete="off" /></div>
+          <div class="ff"><label>Plate source</label><select id="f-psrc"><option value="">Select...</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option><option>GCC / Other</option></select></div>
+          <div class="ff"><label>Vehicle type</label><select id="f-vtype" onchange="updDocks()"><option value="">Select...</option><option>Heavy Truck / Trailer</option><option>Van</option><option>Car</option><option>3-Ton Truck</option></select></div>
+          <div class="ff"><label>Emirates ID</label><input id="f-eid" placeholder="784-XXXX-XXXXXXX-X" inputmode="numeric" /></div>
+          <div class="ff"><label>Contact number</label><input id="f-contact" placeholder="05X-XXXXXXX" inputmode="tel" /></div>
+          <div class="ff"><label>Transport company</label><input id="f-co" autocomplete="off" /></div>
+          <div class="ff"><label>Purpose of visit</label><select id="f-purpose" onchange="updDocks()"><option value="">Select...</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select></div>
+          <div class="ff">
+            <label>Dock number</label>
+            <select id="f-dock"><option value="">Select purpose &amp; type first</option></select>
+            <div class="dal" id="dock-al"></div>
+          </div>
+          <div class="ff"><label>Security officer</label><select id="f-officer"><option value="">Select...</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option></select></div>
+          <div class="ff ful"><label>Remarks</label><input id="f-remarks" placeholder="Optional notes" /></div>
+          <div class="ff ful" id="wait-row" style="display:none">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:13px;font-weight:500;color:var(--orn)">
+              <input type="checkbox" id="f-wait" style="width:16px;height:16px;min-height:auto;accent-color:var(--orn)" />
+              ⚠ All suitable docks are occupied — mark driver as waiting outside
+            </label>
+          </div>
+        </div>
+        <div class="fa">
+          <button class="btn btn-o" onclick="toggleForm()">Cancel</button>
+          <button class="btn btn-g" onclick="submitEntry()">✓ Check in now</button>
+        </div>
+      </div>
+    </div>
+    <div class="tlb">
+      <input class="ti tis" type="search" id="log-q" placeholder="Search driver, plate, company, Emirates ID..." oninput="filterLog()" />
+      <input class="ti" type="date" id="log-date" onchange="filterLog()" style="width:145px" />
+      <select class="ti" id="log-purpose" onchange="filterLog()"><option value="">All purposes</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select>
+      <select class="ti" id="log-platesrc" onchange="filterLog()"><option value="">All plate sources</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option><option>GCC / Other</option></select>
+      <select class="ti" id="log-officer" onchange="filterLog()"><option value="">All officers</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option></select>
+      <select class="ti" id="log-status" onchange="filterLog()">
+        <option value="">All status</option><option value="inside">Inside</option>
+        <option value="out">Exited</option><option value="waiting">Waiting outside</option>
+      </select>
+      <span class="cpill" id="log-count">—</span>
+      <div class="ta">
+        <button class="btn btn-o btn-sm" onclick="clearFilters()">Clear</button>
+        <button class="btn btn-o btn-sm" onclick="exportCSV()">↓ Export CSV</button>
+        <button class="btn btn-g btn-sm" id="btn-add" onclick="toggleForm()">+ Add entry</button>
+      </div>
+    </div>
+    <div class="tw"><table>
+      <colgroup><col style="width:88px"><col style="width:56px"><col style="width:140px"><col style="width:128px"><col style="width:100px"><col style="width:130px"><col style="width:42px"><col style="width:64px"><col style="width:96px"><col style="width:110px"></colgroup>
+      <thead><tr><th>Date in</th><th>Time</th><th>Driver</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Dock</th><th>Officer</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="log-body"></tbody>
+    </table></div>
+    <div id="log-cards"></div>
+    <div class="pgr"><button id="pg-prev" onclick="chPg(-1)">← Prev</button><span id="pg-info" style="font-weight:500">Page 1 of 1</span><button id="pg-next" onclick="chPg(1)">Next →</button></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="screen-history" class="screen hid">
+    <p class="tmt tsm" style="margin-bottom:14px">Enter a plate number to see every visit that vehicle has made.</p>
+    <div style="display:flex;gap:10px;max-width:520px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="ti" id="hist-q" placeholder="e.g. DXB 53908" style="flex:1;min-width:150px" onkeydown="if(event.key==='Enter')searchHist()" />
+      <button class="btn btn-p" onclick="searchHist()">Search</button>
+      <button class="btn btn-o" onclick="clearHist()">Clear</button>
+    </div>
+    <div id="hist-res" class="crd" style="margin-bottom:14px;display:none"></div>
+    <div id="hist-tw" class="tw hid"><table>
+      <colgroup><col style="width:92px"><col style="width:60px"><col style="width:96px"><col style="width:60px"><col style="width:90px"><col style="width:130px"><col style="width:42px"><col style="width:72px"><col style="width:80px"></colgroup>
+      <thead><tr><th>Date in</th><th>Time in</th><th>Exit date</th><th>Time out</th><th>Duration</th><th>Purpose</th><th>Dock</th><th>Officer</th><th>Status</th></tr></thead>
+      <tbody id="hist-body"></tbody>
+    </table></div>
+    <div id="hist-cards"></div>
+    <div id="hist-empty" class="emp hid"><div class="emp-i">🔍</div><h4>No results</h4><p>No visits found for this plate number.</p></div>
+  </div>
+
+  <!-- REPORTS -->
+  <div id="screen-reports" class="screen hid">
+    <div class="sg" style="grid-template-columns:repeat(3,1fr)">
+      <div class="sc st"><div class="sl">This week</div><div class="sv" id="rp-wk">—</div></div>
+      <div class="sc sa"><div class="sl">This month</div><div class="sv" id="rp-mo">—</div></div>
+      <div class="sc so"><div class="sl">Avg duration (hrs)</div><div class="sv" id="rp-avg">—</div></div>
+    </div>
+    <div class="ch2" style="margin-bottom:20px">
+      <div class="chb"><div class="crt">Monthly trend — this year</div><canvas id="rp-monthly"></canvas></div>
+      <div class="chb"><div class="crt">Purpose breakdown — all time</div><canvas id="rp-purpose"></canvas></div>
+    </div>
+    <div class="crd" style="margin-bottom:20px">
+      <div class="crt">🏆 Top 10 vehicles by visit frequency</div>
+      <div id="rp-vehicles"></div>
+    </div>
+    <div class="crd" style="margin-bottom:20px">
+      <div class="crt">Officer performance — this month</div>
+      <div id="rp-officers"></div>
+    </div>
+    <div class="crd">
+      <div class="crt">Export full dataset <button class="btn btn-o btn-sm" onclick="exportAll()">↓ Export all</button></div>
+      <p class="tsm tmt">Downloads every record with all fields as CSV.</p>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div id="screen-users" class="screen hid">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px"><button class="btn btn-g" onclick="openUserModal()">+ Add user</button></div>
+    <div class="crd mb4" style="margin-bottom:16px;background:#fffbeb;border-color:#fcd34d">
+      <div style="font-size:13px;font-weight:600;color:var(--orn);margin-bottom:8px">Role permissions</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:12px;color:var(--sub)">
+        <div><strong style="color:var(--fst)">Admin</strong> — Full access: view, add, check out, edit, delete, manage users, reports, import</div>
+        <div><strong style="color:var(--blu)">Security</strong> — View all records, add new check-ins, check out vehicles</div>
+        <div><strong style="color:var(--mut)">Viewer</strong> — View, filter, search and export only. No changes.</div>
+      </div>
+    </div>
+    <div class="ul" id="user-list"></div>
+  </div>
+
+  <!-- IMPORT -->
+  <div id="screen-import" class="screen hid">
+    <div class="crd" style="max-width:580px">
+      <div class="crt">Import historical data from CSV</div>
+      <p class="tsm tmt" style="margin-bottom:16px">Export your Gate Entry Log Google Sheet as CSV (File → Download → CSV) then drop it below. Required columns: driver_name, plate, date_in, time_in.</p>
+      <div class="dz2" id="drop-z" onclick="document.getElementById('csv-inp').click()"
+        ondragover="event.preventDefault();this.classList.add('dov')"
+        ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event)">
+        <h3>Drop CSV here or click to browse</h3><p>Accepted: .csv files only</p>
+        <input id="csv-inp" type="file" accept=".csv" style="display:none" onchange="handleCSV(this.files[0])">
+      </div>
+      <div id="csv-prog" class="hid" style="margin-top:14px">
+        <div style="font-size:13px;font-weight:500;margin-bottom:6px" id="csv-lbl">Uploading...</div>
+        <div class="pb"><div class="pf" id="csv-fill" style="width:0%"></div></div>
+      </div>
+      <div id="csv-done" class="hid" style="margin-top:10px;color:var(--fst);font-size:13px;font-weight:600"></div>
+    </div>
+  </div>
+
+  </div><!-- /ct -->
+</div><!-- /mn -->
+</div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- EDIT MODAL -->
+<div class="ovl" id="edit-ovl">
+  <div class="mdl">
+    <div class="mh"><h3>Edit entry</h3><button class="mx" onclick="closeModal('edit-ovl')">×</button></div>
+    <div class="mb">
+      <input type="hidden" id="edit-id">
+      <div class="fg3">
+        <div class="ff"><label>Driver name</label><input id="e-driver"></div>
+        <div class="ff"><label>Vehicle plate</label><input id="e-plate"></div>
+        <div class="ff"><label>Plate source</label><select id="e-psrc"><option value="">—</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option><option>GCC / Other</option></select></div>
+        <div class="ff"><label>Vehicle type</label><select id="e-vtype"><option value="">—</option><option>Heavy Truck / Trailer</option><option>Van</option><option>Car</option><option>3-Ton Truck</option></select></div>
+        <div class="ff"><label>Emirates ID</label><input id="e-eid"></div>
+        <div class="ff"><label>Contact</label><input id="e-contact"></div>
+        <div class="ff"><label>Company</label><input id="e-co"></div>
+        <div class="ff"><label>Purpose</label><select id="e-purpose"><option value="">—</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select></div>
+        <div class="ff"><label>Dock</label><select id="e-dock"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
+        <div class="ff"><label>Officer</label><select id="e-officer"><option value="">—</option><option>Denis</option><option>Sam</option><option>Mustafa</option><option>Emmanuel</option></select></div>
+        <div class="ff"><label>Date in</label><input type="date" id="e-datein"></div>
+        <div class="ff"><label>Time in</label><input type="time" id="e-timein"></div>
+        <div class="ff"><label>Exit date</label><input type="date" id="e-exitdate"></div>
+        <div class="ff"><label>Time out</label><input type="time" id="e-timeout"></div>
+        <div class="ff ful"><label>Remarks</label><input id="e-remarks"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="closeModal('edit-ovl')">Cancel</button><button class="btn btn-p" onclick="saveEdit()">Save changes</button></div>
+  </div>
+</div>
+
+<!-- USER MODAL -->
+<div class="ovl" id="user-ovl">
+  <div class="mdl" style="max-width:420px">
+    <div class="mh"><h3>Add new user</h3><button class="mx" onclick="closeModal('user-ovl')">×</button></div>
+    <div class="mb">
+      <div class="fg3" style="grid-template-columns:1fr">
+        <div class="ff"><label>Full name</label><input id="u-name" placeholder="Full name"></div>
+        <div class="ff"><label>Email address</label><input id="u-email" type="email" placeholder="name@company.com"></div>
+        <div class="ff"><label>Password</label><input id="u-pass" type="password" placeholder="Min 8 characters"></div>
+        <div class="ff"><label>Role</label>
+          <select id="u-role">
+            <option value="security">Security — view records, add entries, check out vehicles</option>
+            <option value="viewer">Viewer — view, filter and export only</option>
+            <option value="admin">Admin — full access</option>
+          </select>
+        </div>
+      </div>
+      <div id="u-err" style="color:var(--red);font-size:12px;margin-top:8px"></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="closeModal('user-ovl')">Cancel</button><button class="btn btn-g" onclick="createUser()">Create user</button></div>
+  </div>
+</div>
+
+<!-- QUEUE MODAL -->
+<div class="ovl" id="queue-ovl">
+  <div class="mdl" style="max-width:460px">
+    <div class="mh"><h3>Add vehicle to waiting queue</h3><button class="mx" onclick="closeModal('queue-ovl')">×</button></div>
+    <div class="mb">
+      <div class="fg3" style="grid-template-columns:1fr">
+        <div class="ff"><label>Driver name *</label><input id="q-driver" placeholder="Full name"></div>
+        <div class="ff"><label>Vehicle plate</label><input id="q-plate" placeholder="DXB 12345"></div>
+        <div class="ff"><label>Vehicle type</label><select id="q-vtype"><option value="">Select...</option><option>Heavy Truck / Trailer</option><option>Van</option><option>Car</option><option>3-Ton Truck</option></select></div>
+        <div class="ff"><label>Company</label><input id="q-co"></div>
+        <div class="ff"><label>Purpose</label><select id="q-purpose"><option value="">Select...</option><option>Inbound Delivery</option><option>Outbound Dispatch</option><option>Returns / RTO</option><option>Maintenance / Facility</option><option>Visitor / Management</option><option>Staff Parking</option></select></div>
+        <div class="ff"><label>Contact number</label><input id="q-contact" placeholder="05X-XXXXXXX"></div>
+        <div class="ff"><label>Pre-assign dock (optional)</label><select id="q-dock"><option value="">Assign when dock frees up</option><option>1 — Ambient</option><option>2 — Ambient</option><option>3 — Ambient</option><option>4 — Ambient</option><option>5 — Ambient</option><option>6 — Ramp (Van/Car only)</option><option>7 — Chiller</option><option>8 — Chiller</option><option>9 — Chiller</option></select></div>
+        <div class="ff"><label>Notes</label><input id="q-notes" placeholder="e.g. Cold chain, urgent"></div>
+      </div>
+      <div id="q-err" style="color:var(--red);font-size:12px;margin-top:8px"></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="closeModal('queue-ovl')">Cancel</button><button class="btn btn-g" onclick="addToQueue()">Add to queue</button></div>
+  </div>
+</div>
+
+<div class="tst" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  STEP 1 — Paste your Supabase values here               ║
+// ║  Find them: supabase.com → your project →               ║
+// ║             Project Settings → API                      ║
+// ╚══════════════════════════════════════════════════════════╝
+var SURL = 'https://smaotbyfilafkrikcfse.supabase.co';
+var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtYW90YnlmaWxhZmtyaWtjZnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzEwNjcsImV4cCI6MjA5MTMwNzA2N30.ZdLH0q_X0evFKNcHLAURU9xEevXAi1hyR4wTSJmhfhA';
+// ════════════════════════════════════════════════════════════
+
+// ── dock zone config ──────────────────────────────────────
+var ZONES = {1:'ambient',2:'ambient',3:'ambient',4:'ambient',5:'ambient',6:'ramp',7:'chiller',8:'chiller',9:'chiller'};
+var TRUCKS = ['Heavy Truck / Trailer','3-Ton Truck'];
+var NO_DOCK = ['Visitor / Management','Staff Parking'];
+var PC = {'Inbound Delivery':'bb','Outbound Dispatch':'bv','Returns / RTO':'br','Visitor / Management':'bvi','Maintenance / Facility':'bm','Staff Parking':'bpk'};
+
+// ── state ──────────────────────────────────────────────────
+var _sb=null, _user=null, _prof=null, _charts={}, _rt=null, _rtq=null;
+var _rows=[], _pg=1, _tot=0, _occ={};
+var PAGE=25;
+
+// ── util ───────────────────────────────────────────────────
+function $(id){return document.getElementById(id);}
+function isa(){return _prof&&_prof.role==='admin';}
+function iss(){return _prof&&_prof.role==='security';}
+function isv(){return _prof&&_prof.role==='viewer';}
+function cw(){return isa()||iss();}
+function openModal(id){$(id).classList.add('open');}
+function closeModal(id){$(id).classList.remove('open');}
+var _tt;
+function toast(m,e){var t=$('toast');t.textContent=m;t.style.background=e?'var(--red)':'var(--fst)';t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},3500);}
+function lerr(m,info){var e=$('lerr');e.textContent=m;e.className=info?'info':'err';}
+function openSb(){$('sb').classList.add('open');$('sb-ov').classList.add('active');}
+function closeSb(){$('sb').classList.remove('open');$('sb-ov').classList.remove('active');}
+function fmtDur(ms){if(!ms||ms<=0)return '—';var h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m';}
+function calcMs(dateIn,timeIn,exitDate,timeOut){if(!timeIn||!dateIn||!timeOut)return null;var d=exitDate||dateIn;var ms=new Date(d+'T'+timeOut)-new Date(dateIn+'T'+timeIn);return ms>0?ms:null;}
+
+// ── INIT (runs after CDN scripts are loaded) ───────────────
+(function init(){
+  // Diagnose
+  var dLib=$('d-lib'), dCreds=$('d-creds'), dConn=$('d-conn');
+  var libOk=typeof supabase!=='undefined';
+  var credsOk=SURL&&SURL.indexOf('PASTE_')===-1&&SKEY&&SKEY.indexOf('PASTE_')===-1;
+  dLib.textContent=libOk?'✓ Loaded':'✗ Failed to load';
+  dLib.className=libOk?'diag-ok':'diag-no';
+  dCreds.textContent=credsOk?'✓ Filled in':'✗ Still has placeholder text';
+  dCreds.className=credsOk?'diag-ok':'diag-no';
+  if(!credsOk){
+    dConn.textContent='Skipped';
+    lerr('Open index.html in Notepad, find SURL and SKEY near the top, paste your Supabase values, save, then re-upload to GitHub.', true);
+    return;
+  }
+  if(!libOk){
+    dConn.textContent='Skipped';
+    lerr('Supabase library failed to load. Check internet connection and refresh.');
+    return;
+  }
+  // Init client
+  _sb=supabase.createClient(SURL,SKEY);
+  dConn.textContent='✓ Client created';
+  dConn.className='diag-ok';
+  // Check existing session
+  _sb.auth.getSession().then(function(r){
+    if(r.data&&r.data.session){_user=r.data.session.user;afterLogin();}
+    // else: stay on login screen
+  }).catch(function(e){
+    lerr('Session check failed: '+e.message);
+  });
+  // Auth state listener
+  _sb.auth.onAuthStateChange(function(ev,sess){
+    if(ev==='SIGNED_IN'&&sess){_user=sess.user;afterLogin();}
+    if(ev==='SIGNED_OUT'){_user=null;_prof=null;stopRt();showLogin();}
+  });
+})();
+
+function showLogin(){$('login-screen').style.display='flex';$('app').style.display='none';}
+function showApp(){$('login-screen').style.display='none';$('app').style.display='block';}
+
+// ── AUTH ──────────────────────────────────────────────────
+function doLogin(){
+  var email=$('li-email').value.trim(), pass=$('li-pass').value;
+  lerr('');
+  if(!email||!pass){lerr('Please enter your email and password.');return;}
+  if(!_sb){lerr('Not connected. Check credentials and refresh.');return;}
+  $('btn-login').disabled=true; $('lspin').style.display='block'; $('ltxt').textContent='Signing in...';
+  function reset(){$('btn-login').disabled=false;$('lspin').style.display='none';$('ltxt').textContent='Sign in';}
+  _sb.auth.signInWithPassword({email:email,password:pass}).then(function(r){
+    if(r.error){
+      var msg=r.error.message;
+      if(msg.indexOf('Invalid')!==-1||msg.indexOf('invalid_credentials')!==-1||msg.indexOf('credentials')!==-1){
+        msg='Incorrect email or password. Please try again.';
+      }
+      lerr(msg); reset();
+    }
+    // success → onAuthStateChange fires → afterLogin()
+  }).catch(function(e){lerr('Error: '+e.message);reset();});
+}
+
+function afterLogin(){
+  _sb.from('profiles').select('*').eq('id',_user.id).single().then(function(r){
+    if(!r.data){
+      setTimeout(function(){
+        _sb.from('profiles').select('*').eq('id',_user.id).single().then(function(r2){
+          _prof=r2.data||{role:'security',name:_user.email.split('@')[0]};
+          finishLogin();
+        });
+      },1500);
+    } else {_prof=r.data;finishLogin();}
+  }).catch(function(){_prof={role:'security',name:_user.email.split('@')[0]};finishLogin();});
+}
+function finishLogin(){
+  $('sb-name').textContent=_prof.name||_user.email;
+  $('sb-role').textContent=(_prof.role||'security').toUpperCase();
+  if(isa())$('admin-nav').style.display='block';
+  if(!cw()){var b=$('btn-add');if(b)b.style.display='none';}
+  showApp(); startRt(); go('dashboard');
+}
+function doSignOut(){stopRt();_sb.auth.signOut();}
+function startRt(){
+  _rt=_sb.channel('gel').on('postgres_changes',{event:'*',schema:'public',table:'gate_entries'},function(){
+    toast('Log updated live');
+    var cur=document.querySelector('.screen:not(.hid)');
+    if(!cur)return;
+    if(cur.id==='screen-dashboard')loadDash();
+    else if(cur.id==='screen-log')loadLog();
+    else if(cur.id==='screen-docks')loadDocks();
+  }).subscribe();
+  _rtq=_sb.channel('gelq').on('postgres_changes',{event:'*',schema:'public',table:'dock_queue'},function(){loadDocks();updQBadge();}).subscribe();
+}
+function stopRt(){if(_rt){_sb.removeChannel(_rt);_rt=null;}if(_rtq){_sb.removeChannel(_rtq);_rtq=null;}}
+
+// ── NAV ───────────────────────────────────────────────────
+function go(s){
+  if(['reports','users','import'].includes(s)&&!isa()){toast('Admin access required',1);return;}
+  document.querySelectorAll('.screen').forEach(function(x){x.classList.add('hid');});
+  document.querySelectorAll('.nvi').forEach(function(x){x.classList.remove('active');});
+  $('screen-'+s).classList.remove('hid');
+  var ni=$('nav-'+s);if(ni)ni.classList.add('active');
+  var T={dashboard:'Dashboard',docks:'Dock Manager',log:'Gate Log',history:'Vehicle History',reports:'Reports',users:'User Management',import:'Import Data'};
+  $('page-title').textContent=T[s]||s;
+  closeSb();
+  if(s==='dashboard')loadDash();
+  else if(s==='docks')loadDocks();
+  else if(s==='log'){_pg=1;var b=$('btn-add');if(b)b.style.display=cw()?'':'none';loadLog();}
+  else if(s==='reports')loadReports();
+  else if(s==='users')loadUsers();
+}
+
+// ── OCCUPIED DOCKS ────────────────────────────────────────
+function loadOcc(){
+  return _sb.from('gate_entries').select('dock,plate,driver_name').eq('check_in',true).eq('check_out',false).not('dock','is',null).then(function(r){
+    _occ={};
+    (r.data||[]).forEach(function(e){if(e.dock&&!_occ[e.dock])_occ[e.dock]=e.plate||e.driver_name||'vehicle';});
+  });
+}
+function suitableDocks(purpose,vtype){
+  if(NO_DOCK.indexOf(purpose)!==-1)return[];
+  var truck=TRUCKS.indexOf(vtype)!==-1;
+  var all=[1,2,3,4,5,6,7,8,9];
+  if(truck)all=all.filter(function(d){return d!==6;});
+  return all;
+}
+
+// ── DOCK FORM UPDATE ──────────────────────────────────────
+function updDocks(){
+  var purpose=$('f-purpose').value, vtype=$('f-vtype').value;
+  var dsel=$('f-dock'), dal=$('dock-al'), wr=$('wait-row');
+  if(NO_DOCK.indexOf(purpose)!==-1){dsel.innerHTML='<option value="">No dock needed</option>';dal.style.display='none';wr.style.display='none';return;}
+  if(!purpose){dsel.innerHTML='<option value="">Select purpose first</option>';dal.style.display='none';wr.style.display='none';return;}
+  var suitable=suitableDocks(purpose,vtype);
+  var available=suitable.filter(function(d){return!_occ[d];});
+  dsel.innerHTML='<option value="">Select dock...</option>';
+  suitable.forEach(function(d){
+    var occ=!!_occ[d];
+    var zone=ZONES[d]||'';
+    var zl=zone==='ramp'?'Ramp':zone==='chiller'?'Chiller':'Ambient';
+    var lbl='Dock '+d+' ('+zl+')'+(d===6?' — Van/Car only':'')+(occ?' — OCCUPIED: '+_occ[d]:'');
+    var opt=document.createElement('option');opt.value=d;opt.textContent=lbl;opt.disabled=occ;if(occ)opt.style.color='var(--red)';
+    dsel.appendChild(opt);
+  });
+  if(!available.length&&suitable.length){
+    dal.className='dal wn';dal.style.display='block';dal.textContent='⚠ All suitable docks are occupied. You can still check in and mark driver as waiting outside.';
+    wr.style.display='block';
+  } else if(available.length){
+    dal.className='dal ok';dal.style.display='block';dal.textContent='✓ '+available.length+' dock'+(available.length===1?'':'s')+' free: '+available.map(function(d){return 'Dock '+d;}).join(', ');
+    wr.style.display='none';$('f-wait').checked=false;
+  } else {dal.style.display='none';wr.style.display='none';}
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function loadDash(){
+  var today=new Date().toISOString().split('T')[0];
+  Promise.all([
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}),
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('date_in',today),
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('check_in',true).eq('check_out',false),
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}).eq('date_in',today).eq('check_out',true)
+  ]).then(function(res){
+    $('st-total').textContent=(res[0].count||0).toLocaleString();
+    $('st-today').textContent=res[1].count||0;
+    $('st-inside').textContent=res[2].count||0;
+    $('st-out').textContent=res[3].count||0;
+    $('st-tsub').textContent=new Date().toLocaleDateString('en-AE',{weekday:'short',day:'numeric',month:'short'});
+    var nb=$('badge-inside');if(res[2].count>0){nb.textContent=res[2].count;nb.style.display='inline';}else nb.style.display='none';
+    return _sb.from('gate_entries').select('driver_name,plate,time_in,date_in,officer,company').eq('check_out',false).eq('check_in',true);
+  }).then(function(ir){
+    var now=new Date();
+    var ins=(ir.data||[]).map(function(e){var ms=e.date_in&&e.time_in?now-new Date(e.date_in+'T'+e.time_in):0;return Object.assign({},e,{ms:ms});}).sort(function(a,b){return b.ms-a.ms;});
+    var ov=ins.filter(function(e){return e.ms>4*3600000;});
+    var ban=$('ov-banner');
+    if(ov.length){ban.style.display='block';$('st-ovlbl').textContent=ov.length+' overstay';$('ov-list').innerHTML=ov.map(function(e){var h=(e.ms/3600000).toFixed(1);return '<div class="ovi"><div class="ovd"></div><div class="ovi-i"><div class="ovi-p">'+(e.plate||'—')+' — '+(e.driver_name||'—')+'</div><div class="ovi-m">Officer: '+(e.officer||'—')+' · Entered: '+(e.time_in||'').slice(0,5)+'</div></div><div class="ovi-t">'+h+'h inside</div></div>';}).join('');}
+    else{ban.style.display='none';$('st-ovlbl').textContent='no overstays';}
+    // Outliers
+    var top8=ins.slice(0,8);
+    $('outliers').innerHTML=top8.length?top8.map(function(e,i){var h=(e.ms/3600000).toFixed(1);var cls=e.ms>6*3600000?'dng':e.ms>4*3600000?'dwn':'dok';return '<div class="oli"><div class="olr">'+(i+1)+'</div><div class="oli-i"><div class="oli-p">'+(e.plate||'—')+'</div><div class="oli-n">'+(e.driver_name||'—')+'</div><div class="oli-m">'+(e.company||'—')+' · Since '+(e.time_in||'').slice(0,5)+'</div></div><span class="old '+cls+'">'+h+'h</span></div>';}).join(''):'<p class="tmt tsm">No vehicles currently inside.</p>';
+    // Dock summary
+    return loadOcc();
+  }).then(function(){
+    var occ=Object.keys(_occ).length,free=9-occ;
+    $('dash-docks').innerHTML='<div style="font-size:12px;font-weight:600;color:var(--mut);margin-bottom:8px">'+free+' of 9 docks free</div>'+[1,2,3,4,5,6,7,8,9].map(function(d){var o=_occ[d];var z=ZONES[d]||'';var zl=z==='ramp'?'Ramp':z==='chiller'?'Chiller':'Ambient';return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--brd)"><span style="width:52px;font-weight:700;font-size:12px'+(o?'':';color:var(--mut)')+'">Dock '+d+'</span><span style="font-size:11px;color:var(--mut)">'+zl+'</span><span class="bdg '+(o?'bi':'bo')+'" style="margin-left:auto">'+(o||'Free')+'</span></div>';}).join('');
+    // Charts
+    var d14=new Date();d14.setDate(d14.getDate()-13);
+    var d30=new Date();d30.setDate(d30.getDate()-29);
+    return Promise.all([
+      _sb.from('gate_entries').select('date_in,purpose,vehicle_type,time_in,company,dock,officer').gte('date_in',d14.toISOString().split('T')[0]),
+      _sb.from('gate_entries').select('company').gte('date_in',d30.toISOString().split('T')[0]),
+      _sb.from('gate_entries').select('officer,check_out,dock').eq('date_in',new Date().toISOString().split('T')[0])
+    ]);
+  }).then(function(cr){
+    var rows=cr[0].data||[], r30=cr[1].data||[], rtod=cr[2].data||[];
+    var d14=new Date();d14.setDate(d14.getDate()-13);
+    var days=[],dc=[];
+    for(var i=0;i<14;i++){var d=new Date(d14);d.setDate(d14.getDate()+i);var ds=d.toISOString().split('T')[0];days.push(d.toLocaleDateString('en-AE',{day:'numeric',month:'short'}));dc.push(rows.filter(function(e){return e.date_in===ds;}).length);}
+    mkC('ch-trend','bar',days,[{data:dc,backgroundColor:'#00E784',borderRadius:4,label:'Entries'}]);
+    var pur={};rows.forEach(function(e){if(e.purpose)pur[e.purpose]=(pur[e.purpose]||0)+1;});
+    mkC('ch-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3','#f3e8ff'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12','#6b21a8'],borderWidth:1.5}]);
+    var vt={};rows.forEach(function(e){if(e.vehicle_type)vt[e.vehicle_type]=(vt[e.vehicle_type]||0)+1;});
+    mkC('ch-vtype','bar',Object.keys(vt),[{data:Object.values(vt),backgroundColor:'#00493E',borderRadius:4}],{indexAxis:'y'});
+    var hrs=Array(24).fill(0);rows.forEach(function(e){if(e.time_in)hrs[parseInt(e.time_in.split(':')[0])]++;});
+    var hf=hrs.map(function(c,i){return{h:i,c:c};}).filter(function(x){return x.c>0||(x.h>=5&&x.h<=21);});
+    mkC('ch-hours','bar',hf.map(function(x){return x.h.toString().padStart(2,'0')+':00';}),[ {data:hf.map(function(x){return x.c;}),backgroundColor:'rgba(0,73,62,.75)',borderRadius:3}]);
+    var cos={};r30.forEach(function(e){if(e.company){var c=e.company.trim();cos[c]=(cos[c]||0)+1;}});
+    var top=Object.entries(cos).sort(function(a,b){return b[1]-a[1];}).slice(0,8);var mx=top[0]?top[0][1]:1;
+    $('top-cos').innerHTML=top.length?top.map(function(e){return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><div style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+e[0]+'">'+e[0]+'</div><div style="width:'+Math.round(e[1]/mx*70)+'px;height:6px;background:var(--grn);border-radius:3px;min-width:3px"></div><div style="font-size:12px;font-weight:600;color:var(--fst);width:24px;text-align:right">'+e[1]+'</div></div>';}).join(''):'<p class="tmt tsm">No data.</p>';
+    var ofs={};rtod.forEach(function(e){if(!e.officer)return;if(!ofs[e.officer])ofs[e.officer]={t:0,o:0};ofs[e.officer].t++;if(e.check_out)ofs[e.officer].o++;});
+    $('off-tbl').innerHTML=Object.keys(ofs).length?'<table style="width:100%;font-size:13px"><thead><tr><th style="text-align:left;padding:5px 0;font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--brd)">Officer</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--brd)">In</th><th style="text-align:right;padding:5px 0;font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--brd)">Out</th></tr></thead><tbody>'+Object.entries(ofs).map(function(e){return '<tr><td style="padding:8px 0;border-bottom:1px solid var(--brd)">'+e[0]+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--brd);font-weight:600">'+e[1].t+'</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--brd);font-weight:600;color:var(--fst)">'+e[1].o+'</td></tr>';}).join('')+'</tbody></table>':'<p class="tmt tsm">No entries today yet.</p>';
+    var dks={};rtod.forEach(function(e){if(e.dock){var k='Dock '+e.dock;dks[k]=(dks[k]||0)+1;}});
+    if(Object.keys(dks).length)mkC('ch-docks','bar',Object.keys(dks),[{data:Object.values(dks),backgroundColor:'#00E784',borderRadius:4}]);
+  }).catch(function(e){console.error('Dashboard error',e);});
+}
+
+function mkC(id,type,labels,datasets,extra){
+  extra=extra||{};var el=$(id);if(!el)return;
+  if(_charts[id])_charts[id].destroy();
+  _charts[id]=new Chart(el,{type:type,data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:type==='doughnut',position:'bottom',labels:{font:{size:11},padding:10}}},scales:type!=='doughnut'?{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:10}}}}:{},indexAxis:extra.indexAxis||'x'}});
+}
+
+// ── DOCK MANAGER ──────────────────────────────────────────
+function loadDocks(){
+  loadOcc().then(function(){
+    updQBadge();
+    var grid=$('dock-grid');if(!grid)return;
+    grid.innerHTML=[1,2,3,4,5,6,7,8,9].map(function(d){
+      var o=_occ[d],z=ZONES[d]||'ambient';
+      var cls=o?'busy':z;
+      var zl=z==='ramp'?'Ramp — Van/Car only':z==='chiller'?'Chiller':'Ambient';
+      var zbc='dz-'+(z==='ramp'?'r':z==='chiller'?'c':'a');
+      return '<div class="dc '+cls+'"><div class="dn">Dock '+d+'</div><div class="ds">'+(o?'🔴 Occupied':'🟢 Free')+'</div>'+(o?'<div class="dp">'+o+'</div>':'')+'<div class="dz '+zbc+'">'+zl+'</div></div>';
+    }).join('');
+    return _sb.from('dock_queue').select('*').in('status',['waiting','assigned']).order('arrived_at',{ascending:true});
+  }).then(function(qr){
+    var ql=$('queue-list');if(!ql)return;
+    var q=qr.data||[];
+    if(!q.length){ql.innerHTML='<p class="tmt tsm">No vehicles currently in the waiting queue.</p>';return;}
+    var now=new Date();
+    ql.innerHTML=q.map(function(item,i){
+      var wms=now-new Date(item.arrived_at);var wm=Math.floor(wms/60000);
+      var wstr=wm<60?wm+'m waiting':Math.floor(wm/60)+'h '+(wm%60)+'m waiting';
+      var suitable=suitableDocks(item.purpose,item.vehicle_type);
+      var avail=suitable.filter(function(d){return!_occ[d];});
+      var abtns=avail.slice(0,3).map(function(d){return '<button class="btn btn-g btn-sm" onclick="assignDock('+item.id+','+d+')">→ Dock '+d+'</button>';}).join('');
+      var sb2=item.status==='assigned'?'<span class="bdg bw">Assigned Dock '+item.dock_assigned+'</span>':'<span class="bdg bi">Waiting</span>';
+      return '<div class="qi"><div class="qn">'+(i+1)+'</div><div class="qi-i"><div class="qi-n">'+item.driver_name+(item.plate?' · '+item.plate:'')+'</div><div class="qi-m">'+(item.company||'—')+' · '+(item.vehicle_type||'—')+' · '+(item.purpose||'—')+(item.notes?' · '+item.notes:'')+'</div></div>'+sb2+'<div class="qi-t">'+wstr+'</div><div class="qi-a">'+abtns+'<button class="btn btn-w btn-sm" onclick="clearQueue('+item.id+')">Clear</button></div></div>';
+    }).join('');
+  }).catch(function(e){console.error('Docks error',e);});
+}
+function updQBadge(){
+  _sb.from('dock_queue').select('*',{count:'exact',head:true}).eq('status','waiting').then(function(r){
+    var nb=$('badge-queue');if(r.count>0){nb.textContent=r.count;nb.style.display='inline';}else nb.style.display='none';
+  });
+}
+function openQueueModal(){['q-driver','q-plate','q-co','q-contact','q-notes'].forEach(function(id){$(id).value='';});$('q-vtype').selectedIndex=0;$('q-purpose').selectedIndex=0;$('q-dock').selectedIndex=0;$('q-err').textContent='';openModal('queue-ovl');}
+function addToQueue(){
+  var name=$('q-driver').value.trim();
+  if(!name){$('q-err').textContent='Driver name is required.';return;}
+  var dv=$('q-dock').value;var dnum=dv?parseInt(dv.split(' ')[0]):null;
+  _sb.from('dock_queue').insert([{driver_name:name,plate:$('q-plate').value||null,vehicle_type:$('q-vtype').value||null,company:$('q-co').value||null,purpose:$('q-purpose').value||null,contact:$('q-contact').value||null,notes:$('q-notes').value||null,dock_assigned:dnum,status:dnum?'assigned':'waiting',assigned_at:dnum?new Date().toISOString():null,created_by:_user.id}]).then(function(r){
+    if(r.error){$('q-err').textContent=r.error.message;return;}
+    toast('Added to queue!');closeModal('queue-ovl');loadDocks();
+  });
+}
+function assignDock(qid,dock){
+  _sb.from('dock_queue').update({dock_assigned:dock,status:'assigned',assigned_at:new Date().toISOString()}).eq('id',qid).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('Dock '+dock+' assigned!');loadDocks();
+  });
+}
+function clearQueue(qid){
+  _sb.from('dock_queue').update({status:'cleared',cleared_at:new Date().toISOString()}).eq('id',qid).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('Cleared from queue.');loadDocks();
+  });
+}
+
+// ── GATE LOG ──────────────────────────────────────────────
+function loadLog(){
+  var q=($('log-q').value||'').trim(),date=$('log-date').value,purp=$('log-purpose').value;
+  var plsrc=$('log-platesrc').value,off=$('log-officer').value,stat=$('log-status').value;
+  var qry=_sb.from('gate_entries').select('*',{count:'exact'}).order('id',{ascending:false});
+  if(date)qry=qry.eq('date_in',date);if(purp)qry=qry.eq('purpose',purp);if(plsrc)qry=qry.eq('plate_source',plsrc);if(off)qry=qry.eq('officer',off);
+  if(stat==='inside')qry=qry.eq('check_out',false).eq('check_in',true);
+  else if(stat==='out')qry=qry.eq('check_out',true);
+  else if(stat==='waiting')qry=qry.eq('waiting_outside',true).eq('check_out',false);
+  if(q)qry=qry.or('driver_name.ilike.%'+q+'%,plate.ilike.%'+q+'%,company.ilike.%'+q+'%,emirates_id.ilike.%'+q+'%');
+  qry=qry.range((_pg-1)*PAGE,_pg*PAGE-1);
+  qry.then(function(r){_rows=r.data||[];_tot=r.count||0;renderLog();}).catch(function(e){console.error('Log error',e);});
+}
+function filterLog(){_pg=1;loadLog();}
+function chPg(d){_pg=Math.max(1,_pg+d);loadLog();}
+function clearFilters(){['log-q','log-date'].forEach(function(id){$(id).value='';});['log-purpose','log-platesrc','log-officer','log-status'].forEach(function(id){$(id).selectedIndex=0;});filterLog();}
+
+function renderLog(){
+  var isA=isa(),canCO=isa()||iss();
+  $('log-count').textContent=_tot.toLocaleString()+' records';
+  function stBdg(e){if(e.check_out)return'<span class="bdg bo"><span class="dot dg2"></span>'+(e.time_out||'').slice(0,5)+'</span>';if(e.waiting_outside)return'<span class="bdg bw"><span class="dot dw"></span>Waiting outside</span>';return'<span class="bdg bi"><span class="dot dr"></span>Inside</span>';}
+  function acts(e){var co=canCO&&!e.check_out?'<button class="bco" onclick="doCheckout('+e.id+')">Check out</button>':'';var ed=isA?'<button class="btn-xs be" onclick="openEdit('+e.id+')">Edit</button>':'';var dl=isA?'<button class="btn-xs bd" onclick="doDelete('+e.id+')">Del</button>':'';return co+' '+ed+' '+dl;}
+  if(!_rows.length){var emp='<div class="emp"><div class="emp-i">📋</div><h4>No records found</h4><p>Try adjusting your filters.</p></div>';$('log-body').innerHTML='<tr><td colspan="10">'+emp+'</td></tr>';$('log-cards').innerHTML=emp;$('pg-info').textContent='Page 1 of 1';$('pg-prev').disabled=true;$('pg-next').disabled=true;return;}
+  $('log-body').innerHTML=_rows.map(function(e){return'<tr><td class="tm">'+(e.date_in||'—')+'</td><td class="tm">'+(e.time_in||'—').slice(0,5)+'</td><td class="tn" title="'+(e.driver_name||'')+'">'+(e.driver_name||'—')+'</td><td title="'+(e.company||'')+'">'+(e.company||'—')+'</td><td class="tp">'+(e.plate||'—')+'</td><td><span class="bdg '+(PC[e.purpose]||'bdf')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center;font-weight:600">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+stBdg(e)+'</td><td class="tac">'+acts(e)+'</td></tr>';}).join('');
+  $('log-cards').innerHTML=_rows.map(function(e){return'<div class="ec"><div class="ech"><div><div class="ecn">'+(e.driver_name||'—')+'</div><div class="ecp">'+(e.plate||'—')+(e.plate_source?' · '+e.plate_source:'')+'</div></div>'+stBdg(e)+'</div><div class="ecr"><span>📅 '+(e.date_in||'—')+'</span><span>🕐 '+(e.time_in||'—').slice(0,5)+'</span><span>🏢 '+(e.company||'—')+'</span><span>🚪 Dock '+(e.dock||'—')+'</span><span>👮 '+(e.officer||'—')+'</span></div><span class="bdg '+(PC[e.purpose]||'bdf')+'" style="margin-bottom:8px">'+(e.purpose||'—')+'</span>'+(e.remarks?'<div class="tsm tmt" style="margin:6px 0">📝 '+e.remarks+'</div>':'')+'<div class="eca">'+acts(e)+'</div></div>';}).join('');
+  var tp=Math.max(1,Math.ceil(_tot/PAGE));$('pg-info').textContent='Page '+_pg+' of '+tp;$('pg-prev').disabled=_pg<=1;$('pg-next').disabled=_pg>=tp;
+}
+
+function toggleForm(){var w=$('add-form-wrap');if(w.style.display==='none'||!w.style.display){loadOcc().then(updDocks);w.style.display='block';}else w.style.display='none';}
+
+function submitEntry(){
+  var driver=$('f-driver').value.trim(),plate=$('f-plate').value.trim();
+  if(!driver||!plate){toast('Driver name and plate are required',1);return;}
+  var now=new Date();
+  _sb.from('gate_entries').insert([{check_in:true,date_in:now.toISOString().split('T')[0],time_in:now.toTimeString().slice(0,8),check_out:false,driver_name:driver,plate:plate,plate_source:$('f-psrc').value||null,vehicle_type:$('f-vtype').value||null,emirates_id:$('f-eid').value||null,contact:$('f-contact').value||null,company:$('f-co').value||null,purpose:$('f-purpose').value||null,dock:$('f-dock').value?parseInt($('f-dock').value):null,officer:$('f-officer').value||(_prof?_prof.name:null)||null,remarks:$('f-remarks').value||null,waiting_outside:$('f-wait').checked||false,created_by:_user.id}]).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('✓ Entry checked in!');
+    ['f-driver','f-plate','f-eid','f-contact','f-co','f-remarks'].forEach(function(id){$(id).value='';});
+    ['f-psrc','f-vtype','f-purpose','f-dock','f-officer'].forEach(function(id){$(id).selectedIndex=0;});
+    $('f-wait').checked=false;$('dock-al').style.display='none';$('wait-row').style.display='none';
+    $('add-form-wrap').style.display='none';_pg=1;loadLog();
+  });
+}
+
+function doCheckout(id){
+  if(!cw()){toast('Permission denied',1);return;}
+  var now=new Date();
+  _sb.from('gate_entries').update({check_out:true,exit_date:now.toISOString().split('T')[0],time_out:now.toTimeString().slice(0,8),waiting_outside:false,updated_by:_user.id}).eq('id',id).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('Vehicle checked out!');loadLog();loadOcc();
+  });
+}
+
+function openEdit(id){
+  if(!isa()){toast('Admin access required',1);return;}
+  var e=_rows.find(function(r){return r.id===id;});if(!e)return;
+  $('edit-id').value=id;
+  [['e-driver','driver_name'],['e-plate','plate'],['e-psrc','plate_source'],['e-vtype','vehicle_type'],['e-eid','emirates_id'],['e-contact','contact'],['e-co','company'],['e-purpose','purpose'],['e-dock','dock'],['e-officer','officer'],['e-remarks','remarks']].forEach(function(p){$(p[0]).value=e[p[1]]||'';});
+  $('e-datein').value=e.date_in||'';$('e-timein').value=(e.time_in||'').slice(0,5);$('e-exitdate').value=e.exit_date||'';$('e-timeout').value=(e.time_out||'').slice(0,5);
+  openModal('edit-ovl');
+}
+function saveEdit(){
+  if(!isa()){toast('Admin access required',1);return;}
+  var id=$('edit-id').value,ed=$('e-exitdate').value,to=$('e-timeout').value;
+  _sb.from('gate_entries').update({driver_name:$('e-driver').value,plate:$('e-plate').value,plate_source:$('e-psrc').value||null,vehicle_type:$('e-vtype').value||null,emirates_id:$('e-eid').value||null,contact:$('e-contact').value||null,company:$('e-co').value||null,purpose:$('e-purpose').value||null,dock:$('e-dock').value?parseInt($('e-dock').value):null,officer:$('e-officer').value||null,date_in:$('e-datein').value||null,time_in:$('e-timein').value||null,exit_date:ed||null,time_out:to||null,check_out:!!(ed&&to),remarks:$('e-remarks').value||null,updated_by:_user.id}).eq('id',id).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('Entry updated!');closeModal('edit-ovl');loadLog();
+  });
+}
+function doDelete(id){
+  if(!isa()){toast('Admin access required',1);return;}
+  if(!confirm('Delete this entry permanently? Cannot be undone.'))return;
+  _sb.from('gate_entries').delete().eq('id',id).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);return;}
+    toast('Entry deleted.');loadLog();
+  });
+}
+
+// ── HISTORY ───────────────────────────────────────────────
+function searchHist(){
+  var q=$('hist-q').value.trim();if(!q)return;
+  _sb.from('gate_entries').select('*').ilike('plate','%'+q+'%').order('date_in',{ascending:false}).then(function(r){
+    var data=r.data||[];
+    var resEl=$('hist-res'),wrap=$('hist-tw'),empty=$('hist-empty'),cards=$('hist-cards');
+    if(!data.length){resEl.style.display='none';wrap.classList.add('hid');cards.innerHTML='';empty.classList.remove('hid');return;}
+    empty.classList.add('hid');wrap.classList.remove('hid');
+    var cos=[...new Set(data.map(function(e){return e.company;}).filter(Boolean))].join(', ');
+    resEl.style.display='block';resEl.innerHTML='<strong>'+data[0].plate+'</strong> &nbsp;·&nbsp; '+data.length+' visit'+(data.length!==1?'s':'')+' total<br><span class="tsm tmt">Last visit: '+data[0].date_in+' &nbsp;·&nbsp; Companies: '+(cos||'—')+'</span>';
+    $('hist-body').innerHTML=data.map(function(e){var ms=calcMs(e.date_in,e.time_in,e.exit_date,e.time_out);var st=e.check_out?'<span class="bdg bo">Exited</span>':'<span class="bdg bi">Inside</span>';return'<tr><td class="tm">'+(e.date_in||'—')+'</td><td class="tm">'+(e.time_in||'—').slice(0,5)+'</td><td class="tm">'+(e.exit_date||'—')+'</td><td class="tm">'+(e.time_out||'—').slice(0,5)+'</td><td style="font-size:12px;font-weight:500">'+fmtDur(ms)+'</td><td><span class="bdg '+(PC[e.purpose]||'bdf')+'">'+(e.purpose||'—')+'</span></td><td style="text-align:center">'+(e.dock||'—')+'</td><td>'+(e.officer||'—')+'</td><td>'+st+'</td></tr>';}).join('');
+    cards.innerHTML=data.map(function(e){var ms=calcMs(e.date_in,e.time_in,e.exit_date,e.time_out);var st=e.check_out?'<span class="bdg bo">Exited</span>':'<span class="bdg bi">Inside</span>';return'<div class="ec"><div class="ech"><div><div class="ecn">'+(e.date_in||'—')+'</div><div class="ecp">In: '+(e.time_in||'—').slice(0,5)+' · Out: '+(e.time_out||'—').slice(0,5)+'</div></div>'+st+'</div><div class="ecr"><span>⏱ '+fmtDur(ms)+'</span><span>🚪 Dock '+(e.dock||'—')+'</span><span>👮 '+(e.officer||'—')+'</span></div><span class="bdg '+(PC[e.purpose]||'bdf')+'">'+(e.purpose||'—')+'</span></div>';}).join('');
+  });
+}
+function clearHist(){$('hist-q').value='';$('hist-res').style.display='none';$('hist-tw').classList.add('hid');$('hist-cards').innerHTML='';$('hist-empty').classList.add('hid');}
+
+// ── REPORTS ───────────────────────────────────────────────
+function loadReports(){
+  if(!isa())return;
+  var now=new Date();
+  var yrS=new Date(now.getFullYear(),0,1).toISOString().split('T')[0];
+  var moS=new Date(now.getFullYear(),now.getMonth(),1).toISOString().split('T')[0];
+  var wkS=new Date(now);wkS.setDate(now.getDate()-now.getDay());
+  Promise.all([
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}).gte('date_in',wkS.toISOString().split('T')[0]),
+    _sb.from('gate_entries').select('*',{count:'exact',head:true}).gte('date_in',moS),
+    _sb.from('gate_entries').select('purpose,time_in,time_out,date_in,exit_date,officer').gte('date_in',yrS),
+    _sb.from('gate_entries').select('plate,driver_name,company').eq('check_out',true).gte('date_in',yrS)
+  ]).then(function(res){
+    $('rp-wk').textContent=res[0].count||0;$('rp-mo').textContent=res[1].count||0;
+    var all=res[2].data||[];
+    var durs=all.filter(function(e){return e.time_in&&e.time_out&&e.date_in;}).map(function(e){var ms=calcMs(e.date_in,e.time_in,e.exit_date,e.time_out);return ms?ms/3600000:null;}).filter(function(h){return h&&h>0&&h<24;});
+    $('rp-avg').textContent=durs.length?(durs.reduce(function(a,b){return a+b;},0)/durs.length).toFixed(1):'—';
+    var months={};all.forEach(function(e){if(e.date_in){var m=e.date_in.slice(0,7);months[m]=(months[m]||0)+1;}});
+    var mk=Object.keys(months).sort().slice(-12);
+    mkC('rp-monthly','bar',mk.map(function(m){return new Date(m+'-01').toLocaleDateString('en-AE',{month:'short',year:'2-digit'});}),[ {label:'Entries',data:mk.map(function(k){return months[k];}),backgroundColor:'#00E784',borderRadius:4}]);
+    var pur={};all.forEach(function(e){if(e.purpose)pur[e.purpose]=(pur[e.purpose]||0)+1;});
+    mkC('rp-purpose','doughnut',Object.keys(pur),[{data:Object.values(pur),backgroundColor:['#dbeafe','#ede9fe','#ffedd5','#d1fae5','#fef9c3','#f3e8ff'],borderColor:['#1e40af','#5b21b6','#9a3412','#065f46','#713f12','#6b21a8'],borderWidth:1.5}]);
+    var veh={};(res[3].data||[]).forEach(function(e){if(e.plate){var k=e.plate.trim();if(!veh[k])veh[k]={plate:k,driver:e.driver_name,company:e.company,n:0};veh[k].n++;}});
+    var topV=Object.values(veh).sort(function(a,b){return b.n-a.n;}).slice(0,10);var mxV=topV[0]?topV[0].n:1;
+    $('rp-vehicles').innerHTML=topV.length?topV.map(function(v,i){return'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--brd)"><span style="font-size:12px;font-weight:700;color:var(--mut);width:20px">'+(i+1)+'.</span><span class="tp" style="width:90px">'+v.plate+'</span><span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+v.driver+' · '+(v.company||'—')+'</span><div style="width:'+Math.round(v.n/mxV*80)+'px;height:5px;background:var(--grn);border-radius:3px;min-width:2px"></div><span style="font-size:12px;font-weight:700;color:var(--fst);width:28px;text-align:right">'+v.n+'</span></div>';}).join(''):'<p class="tmt tsm">No data.</p>';
+    var moData=all.filter(function(e){return e.date_in&&e.date_in>=moS;});
+    var ofs={};moData.forEach(function(e){if(e.officer)ofs[e.officer]=(ofs[e.officer]||0)+1;});
+    var sofs=Object.entries(ofs).sort(function(a,b){return b[1]-a[1];});var mxO=sofs[0]?sofs[0][1]:1;
+    $('rp-officers').innerHTML=sofs.map(function(e){return'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:90px;font-weight:600">'+e[0]+'</div><div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="height:100%;width:'+Math.round(e[1]/mxO*100)+'%;background:var(--grn);border-radius:4px"></div></div><div style="font-weight:700;color:var(--fst);width:30px;text-align:right">'+e[1]+'</div></div>';}).join('')||'<p class="tmt tsm">No data this month.</p>';
+  }).catch(function(e){console.error('Reports error',e);});
+}
+function exportAll(){_sb.from('gate_entries').select('*').order('date_in',{ascending:false}).order('id',{ascending:false}).then(function(r){dlCSV(r.data||[]);toast('Exported '+(r.data||[]).length+' records!');});}
+
+// ── USERS ─────────────────────────────────────────────────
+function loadUsers(){
+  if(!isa())return;
+  _sb.from('profiles').select('*').order('created_at').then(function(r){
+    var RBDG={admin:'bad',security:'bsc',viewer:'bvw'};
+    $('user-list').innerHTML=(r.data||[]).map(function(u){
+      var ini=u.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+      var isMe=u.id===_user.id;
+      var roleEl=isMe?'<span class="bdg '+(RBDG[u.role]||'bdf')+'">'+u.role+' (you)</span>':'<select class="ti btn-sm" data-uid="'+u.id+'" style="min-height:auto;padding:4px 8px;width:auto" onchange="changeRole(this.dataset.uid,this.value)"><option value="security"'+(u.role==='security'?' selected':'')+'>Security</option><option value="viewer"'+(u.role==='viewer'?' selected':'')+'>Viewer</option><option value="admin"'+(u.role==='admin'?' selected':'')+'>Admin</option></select>';
+      return'<div class="uc"><div class="uav">'+ini+'</div><div class="ui"><div class="un2">'+u.name+'</div><div class="um">'+u.role+'</div></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+roleEl+'</div></div>';
+    }).join('')||'<p class="tmt">No users found.</p>';
+  });
+}
+function openUserModal(){$('u-err').textContent='';openModal('user-ovl');}
+function createUser(){
+  var name=$('u-name').value.trim(),email=$('u-email').value.trim(),pass=$('u-pass').value,role=$('u-role').value;
+  $('u-err').textContent='';
+  if(!name||!email||!pass){$('u-err').textContent='All fields required.';return;}
+  if(pass.length<8){$('u-err').textContent='Password must be at least 8 characters.';return;}
+  _sb.auth.signUp({email:email,password:pass,options:{data:{name:name,role:role}}}).then(function(r){
+    if(r.error){$('u-err').textContent=r.error.message;return;}
+    toast('✓ User created! They can now sign in.');closeModal('user-ovl');['u-name','u-email','u-pass'].forEach(function(id){$(id).value='';});loadUsers();
+  });
+}
+function changeRole(id,newRole){
+  _sb.from('profiles').update({role:newRole}).eq('id',id).then(function(r){
+    if(r.error){toast('Error: '+r.error.message,1);loadUsers();return;}
+    toast('Role updated to '+newRole+'.');loadUsers();
+  });
+}
+
+// ── IMPORT (CSV) ──────────────────────────────────────────
+function handleDrop(e){e.preventDefault();$('drop-z').classList.remove('dov');if(e.dataTransfer.files[0])handleCSV(e.dataTransfer.files[0]);}
+function handleCSV(file){
+  if(!file)return;
+  file.text().then(function(text){
+    var lines=text.trim().split('\n');
+    var hdrs=lines[0].split(',').map(function(h){return h.trim().toLowerCase().replace(/[^a-z_]/g,'');});
+    var rows=lines.slice(1).map(function(line){var vals=line.split(',');var o={};hdrs.forEach(function(h,i){o[h]=vals[i]?vals[i].replace(/"/g,'').trim()||null:null;});return o;}).filter(function(r){return r.driver_name||r.plate;});
+    $('csv-prog').classList.remove('hid');$('csv-done').classList.add('hid');$('csv-lbl').textContent='Uploading '+rows.length+' rows...';$('csv-fill').style.width='0%';
+    var batches=[],bs=100;
+    for(var i=0;i<rows.length;i+=bs)batches.push(rows.slice(i,i+bs));
+    var done=0;
+    function next(){
+      if(done>=batches.length){$('csv-done').classList.remove('hid');$('csv-done').textContent='✓ Imported '+rows.length+' records successfully.';toast('✓ CSV imported!');return;}
+      _sb.from('gate_entries').insert(batches[done]).then(function(){done++;$('csv-fill').style.width=Math.round(done/batches.length*100)+'%';$('csv-lbl').textContent='Importing '+(done*bs<rows.length?done*bs:rows.length)+' / '+rows.length+'...';next();});
+    }
+    next();
+  });
+}
+
+// ── EXPORT ────────────────────────────────────────────────
+function exportCSV(){
+  var qry=_sb.from('gate_entries').select('*').order('date_in',{ascending:false}).order('id',{ascending:false});
+  var date=$('log-date').value,purp=$('log-purpose').value,plsrc=$('log-platesrc').value,off=$('log-officer').value,stat=$('log-status').value,q=($('log-q').value||'').trim();
+  if(date)qry=qry.eq('date_in',date);if(purp)qry=qry.eq('purpose',purp);if(plsrc)qry=qry.eq('plate_source',plsrc);if(off)qry=qry.eq('officer',off);
+  if(stat==='inside')qry=qry.eq('check_out',false);else if(stat==='out')qry=qry.eq('check_out',true);else if(stat==='waiting')qry=qry.eq('waiting_outside',true).eq('check_out',false);
+  if(q)qry=qry.or('driver_name.ilike.%'+q+'%,plate.ilike.%'+q+'%,company.ilike.%'+q+'%,emirates_id.ilike.%'+q+'%');
+  qry.then(function(r){dlCSV(r.data||[]);toast('✓ Exported '+(r.data||[]).length+' records!');});
+}
+function dlCSV(data){
+  var hdrs=['date_in','time_in','driver_name','company','plate','plate_source','vehicle_type','emirates_id','contact','purpose','dock','officer','check_out','exit_date','time_out','waiting_outside','remarks'];
+  var csv=[hdrs.join(',')].concat(data.map(function(e){return hdrs.map(function(h){return e[h]==null?'':String(e[h]).replace(/,/g,';');}).join(',');})).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gate_log_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+}
+</script>
+</body>
+</html>
